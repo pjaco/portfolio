@@ -1038,11 +1038,65 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.3s ease;
+      transition: transform 0.35s ease;
     }
 
     .film-card:hover .film-card__poster img {
-      transform: scale(1.04);
+      transform: scale(1.06);
+    }
+
+    /* Dark overlay on hover */
+    .film-card__poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: var(--radius-md);
+    }
+
+    .film-card:hover .film-card__poster::after {
+      opacity: 1;
+    }
+
+    /* Title + year overlay at bottom of poster */
+    .film-card__overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 10px 12px;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .film-card:hover .film-card__overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .film-card__overlay-year {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+    }
+
+    .film-card__overlay-title {
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .film-card__poster-placeholder {
@@ -1051,48 +1105,22 @@
       background: linear-gradient(135deg, var(--surface), var(--border));
     }
 
-    .film-card__title {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.3;
-    }
-
-    .film-card__bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-    }
-
     .film-card__rating {
-      font-size: 0.7rem;
+      font-size: 0.82rem;
       color: var(--accent);
-      letter-spacing: 0.02em;
-    }
-
-    .film-card__meta {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-align: right;
+      letter-spacing: 0.04em;
     }
 
     @media (max-width: 600px) {
       .film-grid {
         grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 1fr; /* all rows same height */
-      }
-
-      .film-card {
-        width: 100%;
+        align-items: start;
       }
 
       .film-card__poster {
-        aspect-ratio: 2 / 3; /* enforced — no stretching */
+        aspect-ratio: 2 / 3;
         width: 100%;
+        height: auto;
       }
     }
 
@@ -1466,6 +1494,11 @@
     @media (max-width: 768px) {
       :root {
         --space-xxl: 5rem;
+      }
+
+      .hero {
+        padding-top: calc(var(--nav-height) + var(--space-xl));
+        justify-content: center;
       }
 
       /* Hide hero pill tag on mobile */
@@ -2208,12 +2241,12 @@
               ${f.poster
                 ? `<img src="${f.poster}" alt="${f.title}" loading="lazy" />`
                 : '<div class="film-card__poster-placeholder"></div>'}
+              <div class="film-card__overlay">
+                <div class="film-card__overlay-year">${f.year}</div>
+                <div class="film-card__overlay-title">${f.title}</div>
+              </div>
             </div>
-            <div class="film-card__title">${f.title}</div>
-            <div class="film-card__bottom">
-              <span class="film-card__rating">${f.rating || ''}</span>
-              <span class="film-card__meta">${f.year}</span>
-            </div>
+            ${f.rating ? `<div class="film-card__rating">${f.rating}</div>` : ''}
           </a>
         `).join('');
       }
