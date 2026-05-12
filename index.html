@@ -1083,6 +1083,16 @@
     @media (max-width: 600px) {
       .film-grid {
         grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 1fr; /* all rows same height */
+      }
+
+      .film-card {
+        width: 100%;
+      }
+
+      .film-card__poster {
+        aspect-ratio: 2 / 3; /* enforced — no stretching */
+        width: 100%;
       }
     }
 
@@ -1444,7 +1454,7 @@
       }
 
       .about__visual {
-        order: -1;
+        order: 1;
       }
 
       .about__photo {
@@ -1456,6 +1466,11 @@
     @media (max-width: 768px) {
       :root {
         --space-xxl: 5rem;
+      }
+
+      /* Hide hero pill tag on mobile */
+      .hero__pill {
+        display: none;
       }
 
       /* Dock is desktop-only — mobile uses hamburger overlay */
