@@ -292,6 +292,11 @@
       border-radius: var(--radius-sm);
       padding: 8px;
       backdrop-filter: blur(12px);
+      transition: background var(--transition-base), border-color var(--transition-base);
+    }
+
+    [data-theme="light"] .nav__hamburger {
+      background: rgba(236, 234, 228, 0.85);
     }
 
     .nav__hamburger span {
@@ -830,23 +835,40 @@
     .about__grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
       gap: var(--space-xl);
-      align-items: center;
+      align-items: start;
     }
 
-    .about__text p {
+    .about__text-head {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .about__text-body {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: start;
+    }
+
+    .about__visual {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+
+    .about__text-body p {
       font-size: 1rem;
       color: var(--text-muted);
       line-height: 1.8;
       margin-bottom: var(--space-sm);
     }
 
-    .about__text p strong {
+    .about__text-body p strong {
       color: var(--text-primary);
       font-weight: 600;
     }
 
-    .about__text p:last-of-type {
+    .about__text-body p:last-of-type {
       margin-bottom: 0;
     }
 
@@ -1478,12 +1500,13 @@
 
     @media (max-width: 900px) {
       .about__grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
       }
 
-      .about__visual {
-        order: 1;
-      }
+      .about__text-head { order: 1; }
+      .about__visual    { order: 2; }
+      .about__text-body { order: 3; }
 
       .about__photo {
         max-width: 280px;
@@ -1879,22 +1902,25 @@
     <section id="about" class="about">
       <div class="container">
         <div class="about__grid">
-          <div class="about__text reveal">
+          <div class="about__text-head reveal">
             <div class="section-label">
               <span class="section-label__line"></span>
               <span class="section-label__text">the human</span>
             </div>
             <h2 class="section-heading" style="margin-bottom: var(--space-lg);">the human behind<br />the pixels</h2>
-            <!-- // TODO: update bio as needed -->
-            <p>I'm <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I've been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.</p>
-            <p>My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don't notice. I obsess over that frictionless moment when everything just clicks.</p>
-            <p>I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.</p>
           </div>
 
           <div class="about__visual reveal reveal-delay-2">
             <div class="about__photo">
               <img src="images/person/thomas.jpg" alt="Thomas Skowronek" />
             </div>
+          </div>
+
+          <div class="about__text-body reveal reveal-delay-1">
+            <!-- // TODO: update bio as needed -->
+            <p>I'm <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I've been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.</p>
+            <p>My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don't notice. I obsess over that frictionless moment when everything just clicks.</p>
+            <p>I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.</p>
           </div>
         </div>
 
