@@ -1122,6 +1122,34 @@
       overflow: hidden;
     }
 
+    /* "Open Letterboxd" badge — top right, touch only */
+    .film-card__open-hint {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #fff;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Touch tapped state — mirrors hover */
+    @media (hover: none) {
+      .film-card--tapped .film-card__poster::after { opacity: 1; }
+      .film-card--tapped .film-card__overlay { opacity: 1; transform: translateY(0); }
+      .film-card--tapped .film-card__open-hint { opacity: 1; }
+    }
+
     .film-card__poster-placeholder {
       width: 100%;
       height: 100%;
@@ -2269,6 +2297,7 @@
               ${f.poster
                 ? `<img src="${f.poster}" alt="${f.title}" loading="lazy" />`
                 : '<div class="film-card__poster-placeholder"></div>'}
+              <div class="film-card__open-hint">Open Letterboxd ↗</div>
               <div class="film-card__overlay">
                 <div class="film-card__overlay-year">${f.year}</div>
                 <div class="film-card__overlay-title">${f.title}</div>
@@ -2287,6 +2316,36 @@
         // keep placeholders on error
       }
     })();
+
+    /* =====================================================
+       FILM CARDS — tap-to-reveal on touch devices
+       ===================================================== */
+
+    if (window.matchMedia('(hover: none)').matches) {
+      const filmGrid = document.getElementById('filmGrid');
+
+      filmGrid.addEventListener('click', (e) => {
+        const card = e.target.closest('.film-card');
+        if (!card) return;
+
+        if (card.classList.contains('film-card--tapped')) {
+          // Second tap — navigate (let the <a> handle it naturally)
+          return;
+        }
+
+        // First tap — reveal overlay, block navigation
+        e.preventDefault();
+        filmGrid.querySelectorAll('.film-card--tapped').forEach(c => c.classList.remove('film-card--tapped'));
+        card.classList.add('film-card--tapped');
+      });
+
+      // Tap outside grid — dismiss
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#filmGrid')) {
+          filmGrid.querySelectorAll('.film-card--tapped').forEach(c => c.classList.remove('film-card--tapped'));
+        }
+      });
+    }
 
     /* =====================================================
        FOOTER LOGO — 3D tilt + glow on mousemove
