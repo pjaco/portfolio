@@ -597,32 +597,6 @@
       box-shadow: 0 8px 24px rgba(245, 200, 66, 0.12);
     }
 
-    .hero__scroll {
-      position: absolute;
-      bottom: 96px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      animation: bounce 2.4s ease-in-out infinite;
-    }
-
-    .hero__scroll svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--accent);
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(8px); }
-    }
 
     /* ============================= */
     /* ===== WORK SECTION ===== */
@@ -1639,12 +1613,7 @@
         </div>
       </div>
 
-      <div class="hero__scroll" aria-hidden="true">
-        <span>scroll</span>
-        <svg viewBox="0 0 20 20" fill="none">
-          <path d="M10 4v12M4 10l6 6 6-6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
+
     </section>
 
     <!-- ===== WORK SECTION ===== -->
@@ -1857,7 +1826,7 @@
             <!-- // TODO: update bio as needed -->
             <p>I'm <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I've been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.</p>
             <p>My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don't notice. I obsess over that frictionless moment when everything just clicks.</p>
-            <p>I cook, I train, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I read and watch film to escape or to grow, rarely anything in between.</p>
+            <p>I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.</p>
           </div>
 
           <div class="about__visual reveal reveal-delay-2">
@@ -1890,7 +1859,7 @@
         <!-- Last 4 watched -->
         <div class="about__films reveal reveal-delay-4">
           <div class="about__films-header">
-            <span class="about__films-label">last 4 watched</span>
+            <span class="about__films-label">last 4 watched movies</span>
             <a href="https://letterboxd.com/StudioHibari/" target="_blank" rel="noopener noreferrer" class="about__letterboxd-link" aria-label="Letterboxd profile">
               <svg width="42" height="16" viewBox="0 0 56 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex-shrink:0;">
                 <circle cx="12" cy="12" r="11" fill="#ff8000"/>
@@ -2197,24 +2166,15 @@
     sections.forEach(s => sectionObserver.observe(s));
 
     /* =====================================================
-       LETTERBOXD — last 4 watched (RSS via CORS proxy)
+       LETTERBOXD — last 4 watched movies (Vercel serverless)
        ===================================================== */
 
     (async function fetchLetterboxd() {
-      const rssUrl  = 'https://letterboxd.com/StudioHibari/rss/';
-      const proxy   = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(rssUrl);
-      const grid    = document.getElementById('filmGrid');
-
-      function starsFor(n) {
-        if (!n) return '';
-        const full = Math.floor(n);
-        const half = (n % 1) >= 0.5;
-        return '★'.repeat(full) + (half ? '½' : '');
-      }
+      const grid = document.getElementById('filmGrid');
 
       function renderFilms(films) {
         grid.innerHTML = films.map(f => `
-          <a href="${f.link}" target="_blank" rel="noopener noreferrer" class="film-card">
+          <a href="${f.url || '#'}" target="_blank" rel="noopener noreferrer" class="film-card">
             <div class="film-card__poster">
               ${f.poster
                 ? `<img src="${f.poster}" alt="${f.title}" loading="lazy" />`
@@ -2222,39 +2182,15 @@
             </div>
             <div class="film-card__title">${f.title}</div>
             <div class="film-card__meta">${f.year}</div>
-            ${f.rating ? `<div class="film-card__rating">${starsFor(f.rating)}</div>` : ''}
+            ${f.rating ? `<div class="film-card__rating">${f.rating}</div>` : ''}
           </a>
         `).join('');
       }
 
       try {
-        const res  = await fetch(proxy);
-        const text = await res.text();
-        const xml  = new DOMParser().parseFromString(text, 'text/xml');
-        const items = Array.from(xml.querySelectorAll('item')).slice(0, 4);
-
-        const films = items.map(item => {
-          const raw   = item.querySelector('title')?.textContent ?? '';
-          const match = raw.match(/^(.+?),\s*(\d{4})/);
-          const title = match ? match[1].trim() : raw;
-          const year  = match ? match[2] : '';
-
-          const ratingEl = item.getElementsByTagNameNS('https://letterboxd.com', 'memberRating')[0]
-                        || item.getElementsByTagNameNS('*', 'memberRating')[0];
-          const rating = ratingEl ? parseFloat(ratingEl.textContent) : 0;
-
-          const desc  = item.querySelector('description')?.textContent ?? '';
-          const img   = desc.match(/<img[^>]+src="([^"]+)"/);
-          const poster = img ? img[1] : '';
-
-          const link = item.querySelector('link')?.nextSibling?.textContent?.trim()
-                    || item.querySelector('link')?.textContent?.trim()
-                    || '#';
-
-          return { title, year, rating, poster, link };
-        });
-
-        if (films.length) renderFilms(films);
+        const res  = await fetch('/api/letterboxd');
+        const data = await res.json();
+        if (data.films?.length) renderFilms(data.films);
       } catch (_) {
         // keep placeholders on error
       }
