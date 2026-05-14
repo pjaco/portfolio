@@ -3072,7 +3072,7 @@
     let shotIdx    = 0;
 
     function shotGoTo(idx, skipAnim) {
-      shotIdx = Math.max(0, Math.min(idx, shotImages.length - 1));
+      shotIdx = ((idx % shotImages.length) + shotImages.length) % shotImages.length;
       if (skipAnim) {
         shotTrack.style.transition = 'none';
         shotTrack.style.transform  = `translateX(-${shotIdx * 100}%)`;
@@ -3082,8 +3082,8 @@
       }
       shotDotsEl.querySelectorAll('.screenshot-viewer__dot').forEach((d, i) =>
         d.classList.toggle('is-active', i === shotIdx));
-      shotPrev.disabled = shotIdx === 0;
-      shotNext.disabled = shotIdx === shotImages.length - 1;
+      shotPrev.disabled = false;
+      shotNext.disabled = false;
     }
 
     function buildViewer(images) {
@@ -3144,12 +3144,12 @@
 
     function lbUpdateCounter() {
       lightboxCounter.textContent = `${lbIdx + 1} / ${lbImages.length}`;
-      lightboxPrev.disabled = lbIdx === 0;
-      lightboxNext.disabled = lbIdx === lbImages.length - 1;
+      lightboxPrev.disabled = false;
+      lightboxNext.disabled = false;
     }
 
     function lbGoTo(idx) {
-      if (idx < 0 || idx >= lbImages.length) return;
+      idx = ((idx % lbImages.length) + lbImages.length) % lbImages.length;
       lbIdx = idx;
 
       lightboxImgWrap.classList.add('is-transitioning');
@@ -3223,9 +3223,8 @@
     }
 
     function updateProjectNavBtns() {
-      const idx = projectOrder.indexOf(currentProjectId);
-      projectPrev.disabled = idx <= 0;
-      projectNext.disabled = idx >= projectOrder.length - 1;
+      projectPrev.disabled = false;
+      projectNext.disabled = false;
     }
 
     function openModal(projectId, direction) {
@@ -3275,9 +3274,8 @@
     }
 
     function navigateProject(direction) {
-      const idx = projectOrder.indexOf(currentProjectId);
-      const next = direction === 'next' ? idx + 1 : idx - 1;
-      if (next < 0 || next >= projectOrder.length) return;
+      const idx  = projectOrder.indexOf(currentProjectId);
+      const next = (idx + (direction === 'next' ? 1 : -1) + projectOrder.length) % projectOrder.length;
       openModal(projectOrder[next], direction);
     }
 
