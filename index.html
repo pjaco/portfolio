@@ -811,6 +811,55 @@
       transform: scale(1) translateY(0);
     }
 
+    /* Project prev / next — fixed to screen edges */
+    .project-modal__project-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%) scale(0.85);
+      z-index: 2002;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, background 0.2s ease,
+                  transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .project-modal.is-open .project-modal__project-nav {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .project-modal__project-nav:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .project-modal__project-nav:disabled {
+      opacity: 0.18 !important;
+      pointer-events: none;
+    }
+
+    .project-modal__project-nav--prev { left: 16px; }
+    .project-modal__project-nav--next { right: 16px; }
+
+    @media (max-width: 600px) {
+      .project-modal__project-nav { width: 38px; height: 38px; }
+      .project-modal__project-nav--prev { left: 6px; }
+      .project-modal__project-nav--next { right: 6px; }
+    }
+
     .project-modal__close {
       position: sticky;
       top: var(--space-md);
@@ -2463,7 +2512,15 @@
   <!-- ===== PROJECT MODAL ===== -->
   <div class="project-modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="project-modal__backdrop" id="modalBackdrop"></div>
-    <div class="project-modal__panel">
+
+    <button class="project-modal__project-nav project-modal__project-nav--prev" id="projectPrev" aria-label="Previous project">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M13 16L7 10l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="project-modal__project-nav project-modal__project-nav--next" id="projectNext" aria-label="Next project">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="project-modal__panel" id="modalPanel">
       <button class="project-modal__close" id="modalClose" aria-label="Schließen">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -3124,14 +3181,19 @@
     addSwipe(lightbox, () => lbGoTo(lbIdx + 1), () => lbGoTo(lbIdx - 1));
 
     /* ── Modal open/close ── */
-    function openModal(projectId) {
-      const p = projectData[projectId];
-      if (!p) return;
+    const modalPanel   = document.getElementById('modalPanel');
+    const projectPrev  = document.getElementById('projectPrev');
+    const projectNext  = document.getElementById('projectNext');
+    const projectOrder = ['deepeye', 'routenopt', 'jobspreader', 'vaps', 'sales-suite', 'x4c'];
+    let   currentProjectId = null;
+    let   isAnimating      = false;
 
+    function populateModal(p) {
       buildViewer(p.images || []);
 
       document.getElementById('modalTags').innerHTML = p.tags
         .map(t => `<span class="card__tag">${t}</span>`).join('');
+
       const titleEl = document.getElementById('modalTitle');
       if (p.logo) {
         titleEl.innerHTML = `<img class="project-modal__logo" src="${p.logo}" alt="${p.title}" />`;
@@ -3158,18 +3220,90 @@
       document.getElementById('modalBody').innerHTML = p.sections
         .map(s => `<p class="project-modal__section-heading">${s.heading}</p>
           <p class="project-modal__section-text">${s.text}</p>`).join('');
+    }
 
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      modalClose.focus();
+    function updateProjectNavBtns() {
+      const idx = projectOrder.indexOf(currentProjectId);
+      projectPrev.disabled = idx <= 0;
+      projectNext.disabled = idx >= projectOrder.length - 1;
+    }
+
+    function openModal(projectId, direction) {
+      const p = projectData[projectId];
+      if (!p || isAnimating) return;
+
+      const isUpdate = modal.classList.contains('is-open') && direction;
+
+      if (isUpdate) {
+        isAnimating = true;
+        const exitX = direction === 'next' ? '-72px' : '72px';
+        const enterX = direction === 'next' ? '72px' : '-72px';
+
+        // Slide out
+        modalPanel.style.transition = 'transform 0.22s ease, opacity 0.18s ease';
+        modalPanel.style.transform  = `translateX(${exitX}) scale(0.97)`;
+        modalPanel.style.opacity    = '0';
+
+        setTimeout(() => {
+          populateModal(p);
+          modalPanel.scrollTop = 0;
+          currentProjectId = projectId;
+          updateProjectNavBtns();
+
+          // Snap to enter position
+          modalPanel.style.transition = 'none';
+          modalPanel.style.transform  = `translateX(${enterX}) scale(0.97)`;
+
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            // Slide in with spring
+            modalPanel.style.transition = 'transform 0.38s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.28s ease';
+            modalPanel.style.transform  = '';
+            modalPanel.style.opacity    = '';
+            setTimeout(() => { isAnimating = false; }, 400);
+          }));
+        }, 210);
+
+      } else {
+        populateModal(p);
+        currentProjectId = projectId;
+        updateProjectNavBtns();
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        modalClose.focus();
+      }
+    }
+
+    function navigateProject(direction) {
+      const idx = projectOrder.indexOf(currentProjectId);
+      const next = direction === 'next' ? idx + 1 : idx - 1;
+      if (next < 0 || next >= projectOrder.length) return;
+      openModal(projectOrder[next], direction);
     }
 
     function closeModal() {
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      modalPanel.style.transform = '';
+      modalPanel.style.opacity   = '';
+      isAnimating = false;
     }
+
+    projectPrev.addEventListener('click', () => navigateProject('prev'));
+    projectNext.addEventListener('click', () => navigateProject('next'));
+
+    // Swipe on modal panel (but not inside screenshot viewer) to navigate projects
+    let projectSwipeX = 0;
+    modalPanel.addEventListener('touchstart', e => {
+      if (e.target.closest('#screenshotViewer')) return;
+      projectSwipeX = e.touches[0].clientX;
+    }, { passive: true });
+    modalPanel.addEventListener('touchend', e => {
+      if (e.target.closest('#screenshotViewer')) return;
+      const dx = e.changedTouches[0].clientX - projectSwipeX;
+      if (Math.abs(dx) > 80) navigateProject(dx < 0 ? 'next' : 'prev');
+    }, { passive: true });
 
     document.querySelectorAll('.card[data-project]').forEach(card => {
       card.addEventListener('click', () => openModal(card.dataset.project));
