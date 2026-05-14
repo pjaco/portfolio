@@ -278,6 +278,37 @@
     [data-theme="light"] .nav__theme-toggle .icon-moon { display: none;  }
     [data-theme="light"] .nav__theme-toggle .icon-sun  { display: block; }
 
+    /* ── Language toggle ── */
+    .nav__lang-toggle {
+      pointer-events: all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      padding: 0 10px;
+      cursor: pointer;
+      background: rgba(26, 26, 26, 0.75);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(12px);
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      transition: color var(--transition-base), border-color var(--transition-base), background var(--transition-base);
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .nav__lang-toggle {
+      background: rgba(236, 234, 228, 0.75);
+    }
+
+    .nav__lang-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
     /* ── Hamburger (mobile only) ── */
     .nav__hamburger {
       pointer-events: all;
@@ -2096,6 +2127,9 @@
       </a>
 
       <div class="nav__actions">
+        <!-- language toggle — always visible -->
+        <button class="nav__lang-toggle" id="langToggle" aria-label="Switch language">DE</button>
+
         <!-- theme toggle — always visible -->
         <button class="nav__theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
           <!-- moon = dark mode is active -->
@@ -2121,11 +2155,11 @@
 
   <!-- Mobile overlay nav -->
   <div class="nav__overlay" aria-hidden="true">
-    <a href="#hero"    class="nav__overlay-link">start here</a>
-    <a href="#work"    class="nav__overlay-link">stuff i made</a>
-    <a href="#about"   class="nav__overlay-link">the human</a>
-    <a href="#career"  class="nav__overlay-link">my journey</a>
-    <a href="#contact" class="nav__overlay-link">say hi</a>
+    <a href="#hero"    class="nav__overlay-link" data-i18n="nav.start">start here</a>
+    <a href="#work"    class="nav__overlay-link" data-i18n="nav.work">stuff i made</a>
+    <a href="#about"   class="nav__overlay-link" data-i18n="nav.about">the human</a>
+    <a href="#career"  class="nav__overlay-link" data-i18n="nav.career">my journey</a>
+    <a href="#contact" class="nav__overlay-link" data-i18n="nav.contact">say hi</a>
   </div>
 
   <!-- ===== DOCK (bottom floating nav — desktop) ===== -->
@@ -2146,11 +2180,11 @@
         <!-- Sliding yellow pill — positioned by JS -->
         <div class="dock__pill" id="dockPill" aria-hidden="true"></div>
 
-        <a href="#hero"    class="dock__link" data-section="hero">start here</a>
-        <a href="#work"    class="dock__link" data-section="work">stuff i made</a>
-        <a href="#about"   class="dock__link" data-section="about">the human</a>
-        <a href="#career"  class="dock__link" data-section="career">my journey</a>
-        <a href="#contact" class="dock__link" data-section="contact">say hi</a>
+        <a href="#hero"    class="dock__link" data-section="hero"    data-i18n="nav.start">start here</a>
+        <a href="#work"    class="dock__link" data-section="work"    data-i18n="nav.work">stuff i made</a>
+        <a href="#about"   class="dock__link" data-section="about"   data-i18n="nav.about">the human</a>
+        <a href="#career"  class="dock__link" data-section="career"  data-i18n="nav.career">my journey</a>
+        <a href="#contact" class="dock__link" data-section="contact" data-i18n="nav.contact">say hi</a>
       </div>
     </div>
   </nav>
@@ -2164,24 +2198,24 @@
           <span class="pill pill--accent">UX Lead · Design</span>
         </div>
 
-        <h1 class="hero__heading reveal reveal-delay-1">
+        <h1 class="hero__heading reveal reveal-delay-1" data-i18n-html="hero.heading">
           Good design has one job:<br />
           getting out of the way.<br />
           <em>That's convenience.</em>
         </h1>
 
-        <p class="hero__sub reveal reveal-delay-2">
+        <p class="hero__sub reveal reveal-delay-2" data-i18n-html="hero.sub">
           Thomas · UX Lead at Wollmilchsau<br>Honestly? I just really hate it when things are harder than they need to be. Turns out that's a career.
         </p>
 
         <div class="hero__ctas reveal reveal-delay-3">
           <a href="#work" class="btn btn--primary">
-            see my work
+            <span data-i18n="hero.cta.work">see my work</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
-          <a href="#contact" class="btn btn--outline">let's talk</a>
+          <a href="#contact" class="btn btn--outline" data-i18n="hero.cta.contact">let's talk</a>
         </div>
       </div>
 
@@ -2194,10 +2228,10 @@
         <div class="work__header reveal">
           <div class="section-label">
             <span class="section-label__line"></span>
-            <span class="section-label__text">selected work</span>
+            <span class="section-label__text" data-i18n="work.label">selected work</span>
           </div>
-          <h2 class="section-heading">stuff i made</h2>
-          <p class="work__sub">A hand-picked selection — not everything I've shipped, just the projects I keep thinking about.</p>
+          <h2 class="section-heading" data-i18n="work.heading">stuff i made</h2>
+          <p class="work__sub" data-i18n="work.sub">A hand-picked selection — not everything I've shipped, just the projects I keep thinking about.</p>
         </div>
 
         <div class="work__grid">
@@ -2205,88 +2239,88 @@
           <article class="card card--deepeye reveal reveal-delay-1" data-project="deepeye">
             <div class="card__thumbnail"><img src="images/projects/deepeye/deepeye04.png" alt="Deepeye" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">Deepeye</h3>
-              <p class="card__desc">AI-assisted retinal disease diagnostics — from field research to a fully spun-off company.</p>
+              <h3 class="card__title" data-i18n="card.deepeye.title">Deepeye</h3>
+              <p class="card__desc" data-i18n="card.deepeye.desc">AI-assisted retinal disease diagnostics — from field research to a fully spun-off company.</p>
               <div class="card__tags">
                 <span class="card__tag">UX Research</span>
                 <span class="card__tag">Medical AI</span>
                 <span class="card__tag">CI Design</span>
                 <span class="card__tag">Startup</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
           <article class="card card--route reveal reveal-delay-2" data-project="routenopt">
             <div class="card__thumbnail"><img src="images/projects/routenoptimierung/routenoptimierung02.png" alt="Routenoptimierung" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">Westphalia Datalab Routenoptimierung</h3>
-              <p class="card__desc">AI-powered route optimisation for medication logistics — from first concept to handoff.</p>
+              <h3 class="card__title" data-i18n="card.route.title">Westphalia Datalab Routenoptimierung</h3>
+              <p class="card__desc" data-i18n="card.route.desc">AI-powered route optimisation for medication logistics — from first concept to handoff.</p>
               <div class="card__tags">
                 <span class="card__tag">UX Design</span>
                 <span class="card__tag">AI</span>
                 <span class="card__tag">Route Optimization</span>
                 <span class="card__tag">Healthcare</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
           <article class="card card--jobspr reveal reveal-delay-3" data-project="jobspreader">
             <div class="card__thumbnail"><img src="images/projects/jobspreader/jobspreader01.png" alt="Jobspreader" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">Jobspreader</h3>
-              <p class="card__desc">Iterative product development, strategic initiatives and team leadership — ongoing.</p>
+              <h3 class="card__title" data-i18n="card.jobspr.title">Jobspreader</h3>
+              <p class="card__desc" data-i18n="card.jobspr.desc">Iterative product development, strategic initiatives and team leadership — ongoing.</p>
               <div class="card__tags">
                 <span class="card__tag">Product Design</span>
                 <span class="card__tag">Strategy</span>
                 <span class="card__tag">Team Lead</span>
                 <span class="card__tag">Ongoing</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
           <article class="card card--vaps reveal reveal-delay-1" data-project="vaps">
             <div class="card__thumbnail"><img src="images/projects/VAPS/VAPS01.png" alt="VAPS BI Dashboard" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">VAPS BI Dashboard</h3>
-              <p class="card__desc">BI dashboard for Volkswagen Audi Partner Service — a pilot with real rollout potential.</p>
+              <h3 class="card__title" data-i18n="card.vaps.title">VAPS BI Dashboard</h3>
+              <p class="card__desc" data-i18n="card.vaps.desc">BI dashboard for Volkswagen Audi Partner Service — a pilot with real rollout potential.</p>
               <div class="card__tags">
                 <span class="card__tag">Dashboard Design</span>
                 <span class="card__tag">B2B</span>
                 <span class="card__tag">Stakeholder Management</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
           <article class="card card--sales reveal reveal-delay-2" data-project="sales-suite">
             <div class="card__thumbnail"><img src="images/projects/salessuite/salessuite_companyscreening02.png" alt="Sales Suite: Company Screening" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">Sales Suite: Company Screening</h3>
-              <p class="card__desc">The first feature of a modular sales suite — from raw idea to finished Figma design.</p>
+              <h3 class="card__title" data-i18n="card.sales.title">Sales Suite: Company Screening</h3>
+              <p class="card__desc" data-i18n="card.sales.desc">The first feature of a modular sales suite — from raw idea to finished Figma design.</p>
               <div class="card__tags">
                 <span class="card__tag">UX Research</span>
                 <span class="card__tag">Product Design</span>
                 <span class="card__tag">Figma</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
           <article class="card card--x4c reveal reveal-delay-3" data-project="x4c">
             <div class="card__thumbnail"><img src="images/projects/x4C/x4c04.png" alt="X-4C" loading="lazy" /></div>
             <div class="card__body">
-              <h3 class="card__title">X-4C</h3>
-              <p class="card__desc">A drop-in AI prediction tool — UI and UX from scratch, with nothing but a colour palette to go on.</p>
+              <h3 class="card__title" data-i18n="card.x4c.title">X-4C</h3>
+              <p class="card__desc" data-i18n="card.x4c.desc">A drop-in AI prediction tool — UI and UX from scratch, with nothing but a colour palette to go on.</p>
               <div class="card__tags">
                 <span class="card__tag">UI Design</span>
                 <span class="card__tag">UX Design</span>
                 <span class="card__tag">AI</span>
                 <span class="card__tag">Data Viz</span>
               </div>
-              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="card__cta"><span data-i18n="work.cta">view case study</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
@@ -2301,9 +2335,9 @@
           <div class="about__text-head reveal">
             <div class="section-label">
               <span class="section-label__line"></span>
-              <span class="section-label__text">the human</span>
+              <span class="section-label__text" data-i18n="about.label">the human</span>
             </div>
-            <h2 class="section-heading" style="margin-bottom: var(--space-lg);">the human behind<br />the pixels</h2>
+            <h2 class="section-heading" style="margin-bottom: var(--space-lg);" data-i18n-html="about.heading">the human behind<br />the pixels</h2>
           </div>
 
           <div class="about__visual reveal reveal-delay-2">
@@ -2313,10 +2347,9 @@
           </div>
 
           <div class="about__text-body reveal reveal-delay-1">
-            <!-- // TODO: update bio as needed -->
-            <p>I'm <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I've been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.</p>
-            <p>My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don't notice. I obsess over that frictionless moment when everything just clicks.</p>
-            <p>I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.</p>
+            <p data-i18n-html="about.p1">I'm <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I've been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.</p>
+            <p data-i18n-html="about.p2">My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don't notice. I obsess over that frictionless moment when everything just clicks.</p>
+            <p data-i18n="about.p3">I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.</p>
           </div>
         </div>
 
@@ -2325,15 +2358,15 @@
           <div class="about__book">
             <div class="about__book-cover" aria-hidden="true"><img src="images/books/heroofages.jpg" alt="" /></div>
             <div>
-              <div class="about__book-label">currently reading</div>
+              <div class="about__book-label" data-i18n="about.book1.label">currently reading</div>
               <div class="about__book-title">The Hero of Ages</div>
-              <div class="about__book-sub">Brandon Sanderson · Book 3 of Mistborn</div>
+              <div class="about__book-sub" data-i18n="about.book1.sub">Brandon Sanderson · Book 3 of Mistborn</div>
             </div>
           </div>
           <div class="about__book">
             <div class="about__book-cover" aria-hidden="true"><img src="images/books/salzfettsäurehitze.webp" alt="" /></div>
             <div>
-              <div class="about__book-label">also reading</div>
+              <div class="about__book-label" data-i18n="about.book2.label">also reading</div>
               <div class="about__book-title">Salz Fett Säure Hitze</div>
               <div class="about__book-sub">Samin Nosrat</div>
             </div>
@@ -2343,7 +2376,7 @@
         <!-- Last 4 watched -->
         <div class="about__films reveal reveal-delay-4">
           <div class="about__films-header">
-            <span class="about__films-label">last 4 watched movies</span>
+            <span class="about__films-label" data-i18n="about.films.label">last 4 watched movies</span>
             <a href="https://letterboxd.com/StudioHibari/" target="_blank" rel="noopener noreferrer" class="about__letterboxd-link" aria-label="Letterboxd profile">
               <svg width="42" height="16" viewBox="0 0 56 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;flex-shrink:0;">
                 <circle cx="12" cy="12" r="11" fill="#ff8000"/>
@@ -2373,7 +2406,7 @@
         <div class="reveal">
           <div class="section-label">
             <span class="section-label__line"></span>
-            <span class="section-label__text">experience</span>
+            <span class="section-label__text" data-i18n="career.label">experience</span>
           </div>
         </div>
 
@@ -2381,8 +2414,8 @@
         <div class="career__hero reveal">
           <span class="career__stat">07</span>
           <div class="career__stat-aside">
-            <div class="career__stat-label">years shaping<br>digital products</div>
-            <div class="career__stat-sub">From research to shipped — I work across the full UX stack, with a focus on AI products, B2B SaaS, and design systems.</div>
+            <div class="career__stat-label" data-i18n-html="career.stat.label">years shaping<br>digital products</div>
+            <div class="career__stat-sub" data-i18n="career.stat.sub">From research to shipped — I work across the full UX stack, with a focus on AI products, B2B SaaS, and design systems.</div>
           </div>
         </div>
 
@@ -2392,24 +2425,24 @@
           <div class="career__role">
             <div class="career__role-period">2024 — 2026</div>
             <div class="career__role-info">
-              <div class="career__role-title">UX Lead</div>
+              <div class="career__role-title" data-i18n="career.role1.title">UX Lead</div>
               <div class="career__role-company">Wollmilchsau · Hamburg (Remote)</div>
             </div>
-            <div class="career__role-badge">Current</div>
+            <div class="career__role-badge" data-i18n="career.badge.current">Current</div>
           </div>
 
           <div class="career__role">
             <div class="career__role-period">2022 — 2024</div>
             <div class="career__role-info">
-              <div class="career__role-title">Freelance UX Designer</div>
-              <div class="career__role-company">Self-employed</div>
+              <div class="career__role-title" data-i18n="career.role2.title">Freelance UX Designer</div>
+              <div class="career__role-company" data-i18n="career.role2.company">Self-employed</div>
             </div>
           </div>
 
           <div class="career__role">
             <div class="career__role-period">2019 — 2022</div>
             <div class="career__role-info">
-              <div class="career__role-title">UX Designer</div>
+              <div class="career__role-title" data-i18n="career.role3.title">UX Designer</div>
               <div class="career__role-company">Westphalia Datalab · Münster</div>
             </div>
           </div>
@@ -2418,15 +2451,15 @@
             <div class="career__role-period">2014 — 2019</div>
             <div class="career__role-info">
               <div class="career__role-title">Visual Computing & Design</div>
-              <div class="career__role-company">University Studies</div>
+              <div class="career__role-company" data-i18n="career.edu.studies">University Studies</div>
             </div>
           </div>
 
           <div class="career__role career__role--edu">
             <div class="career__role-period">2013 — 2014</div>
             <div class="career__role-info">
-              <div class="career__role-title">Civil Engineering</div>
-              <div class="career__role-company">University Studies</div>
+              <div class="career__role-title" data-i18n="career.role5.title">Civil Engineering</div>
+              <div class="career__role-company" data-i18n="career.edu.studies">University Studies</div>
             </div>
           </div>
 
@@ -2435,14 +2468,14 @@
         <!-- LinkedIn CTA -->
         <div class="career__cta reveal reveal-delay-2">
           <a href="https://www.linkedin.com/in/thoskowronek/" target="_blank" rel="noopener noreferrer" class="career__linkedin-btn">
-            Full career on LinkedIn
+            <span data-i18n="career.cta.linkedin">Full career on LinkedIn</span>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
           <!-- // TODO: replace href with actual CV file path, e.g. href="/thomas-skowronek-cv.pdf" -->
           <a href="#" class="btn btn--outline btn--sm" download>
-            Download CV
+            <span data-i18n="career.cta.cv">Download CV</span>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M7 2v8M3 7l4 4 4-4M2 12h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -2459,11 +2492,11 @@
           <div class="reveal">
             <div class="section-label" style="justify-content: center;">
               <span class="section-label__line"></span>
-              <span class="section-label__text">contact</span>
+              <span class="section-label__text" data-i18n="contact.label">contact</span>
               <span class="section-label__line"></span>
             </div>
-            <h2 class="section-heading" style="margin-bottom: var(--space-sm);">say hi.</h2>
-            <p class="contact__sub">
+            <h2 class="section-heading" style="margin-bottom: var(--space-sm);" data-i18n="contact.heading">say hi.</h2>
+            <p class="contact__sub" data-i18n="contact.sub">
               Whether it's a project, a job, or just a good design conversation — I'm all ears.
             </p>
           </div>
@@ -2476,8 +2509,8 @@
                   <path d="M2 6l8 5 8-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
               </div>
-              <div class="contact-card__label">click to copy</div>
-              <div class="contact-card__title">Email</div>
+              <div class="contact-card__label" data-i18n="contact.email.label">click to copy</div>
+              <div class="contact-card__title" data-i18n="contact.email.title">Email</div>
               <div class="contact-card__value">thomas@hibari.studio</div>
 
               <!-- Copied feedback overlay -->
@@ -2487,7 +2520,7 @@
                     <path d="M4 10l5 5 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="contact-card__toast-text">email copied</div>
+                <div class="contact-card__toast-text" data-i18n="contact.email.copied">email copied</div>
               </div>
             </button>
 
@@ -2498,7 +2531,7 @@
                   <path d="M6 8.5v5M6 6v.5M10 13.5V11a1.5 1.5 0 013 0v2.5M10 8.5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
                 </svg>
               </div>
-              <div class="contact-card__label">connect with me</div>
+              <div class="contact-card__label" data-i18n="contact.li.label">connect with me</div>
               <div class="contact-card__title">LinkedIn</div>
               <div class="contact-card__value">linkedin.com/in/thoskowronek</div>
             </a>
@@ -2825,6 +2858,162 @@
     });
 
     /* =====================================================
+       LANGUAGE TOGGLE — EN / DE
+       ===================================================== */
+
+    const translations = {
+      en: {
+        'nav.start':  'start here',
+        'nav.work':   'stuff i made',
+        'nav.about':  'the human',
+        'nav.career': 'my journey',
+        'nav.contact':'say hi',
+
+        'hero.heading': 'Good design has one job:<br />getting out of the way.<br /><em>That\'s convenience.</em>',
+        'hero.sub':     'Thomas · UX Lead at Wollmilchsau<br>Honestly? I just really hate it when things are harder than they need to be. Turns out that\'s a career.',
+        'hero.cta.work':    'see my work',
+        'hero.cta.contact': 'let\'s talk',
+
+        'work.label':   'selected work',
+        'work.heading': 'stuff i made',
+        'work.sub':     'A hand-picked selection — not everything I\'ve shipped, just the projects I keep thinking about.',
+        'work.cta':     'view case study',
+
+        'card.deepeye.title': 'Deepeye',
+        'card.deepeye.desc':  'AI-assisted retinal disease diagnostics — from field research to a fully spun-off company.',
+        'card.route.title':   'Westphalia Datalab Routenoptimierung',
+        'card.route.desc':    'AI-powered route optimisation for medication logistics — from first concept to handoff.',
+        'card.jobspr.title':  'Jobspreader',
+        'card.jobspr.desc':   'Iterative product development, strategic initiatives and team leadership — ongoing.',
+        'card.vaps.title':    'VAPS BI Dashboard',
+        'card.vaps.desc':     'BI dashboard for Volkswagen Audi Partner Service — a pilot with real rollout potential.',
+        'card.sales.title':   'Sales Suite: Company Screening',
+        'card.sales.desc':    'The first feature of a modular sales suite — from raw idea to finished Figma design.',
+        'card.x4c.title':     'X-4C',
+        'card.x4c.desc':      'A drop-in AI prediction tool — UI and UX from scratch, with nothing but a colour palette to go on.',
+
+        'about.label':   'the human',
+        'about.heading': 'the human behind<br />the pixels',
+        'about.p1':      'I\'m <strong>Thomas</strong> — a UX Lead based in Lippstadt, Germany, working remotely for <strong>Wollmilchsau</strong> in Hamburg. I\'ve been designing for 7 years, mostly in the AI space, and I studied <strong>Visual Computing & Design</strong>.',
+        'about.p2':      'My design philosophy? <strong>Great design is invisible.</strong> The best interface is the one you don\'t notice. I obsess over that frictionless moment when everything just clicks.',
+        'about.p3':      'I train, I cook, I game — and I disappear into rabbit holes regularly. Japan has had my attention for years, across culture, travel, anime and manga. I watch movies and read to escape or grow, rarely anything in between.',
+        'about.book1.label': 'currently reading',
+        'about.book1.sub':   'Brandon Sanderson · Book 3 of Mistborn',
+        'about.book2.label': 'also reading',
+        'about.films.label': 'last 4 watched movies',
+
+        'career.label':        'experience',
+        'career.stat.label':   'years shaping<br>digital products',
+        'career.stat.sub':     'From research to shipped — I work across the full UX stack, with a focus on AI products, B2B SaaS, and design systems.',
+        'career.role1.title':  'UX Lead',
+        'career.role2.title':  'Freelance UX Designer',
+        'career.role2.company':'Self-employed',
+        'career.role3.title':  'UX Designer',
+        'career.role5.title':  'Civil Engineering',
+        'career.edu.studies':  'University Studies',
+        'career.badge.current':'Current',
+        'career.cta.linkedin': 'Full career on LinkedIn',
+        'career.cta.cv':       'Download CV',
+
+        'contact.label':        'contact',
+        'contact.heading':      'say hi.',
+        'contact.sub':          'Whether it\'s a project, a job, or just a good design conversation — I\'m all ears.',
+        'contact.email.label':  'click to copy',
+        'contact.email.title':  'Email',
+        'contact.email.copied': 'email copied',
+        'contact.li.label':     'connect with me',
+      },
+      de: {
+        'nav.start':  'start',
+        'nav.work':   'meine arbeit',
+        'nav.about':  'über mich',
+        'nav.career': 'mein weg',
+        'nav.contact':'kontakt',
+
+        'hero.heading': 'Gutes Design hat einen Job:<br />aus dem Weg gehen.<br /><em>Das ist Convenience.</em>',
+        'hero.sub':     'Thomas · UX Lead bei Wollmilchsau<br>Ehrlich? Ich hasse es, wenn Dinge komplizierter sind als nötig. Daraus wurde eine Karriere.',
+        'hero.cta.work':    'meine arbeit',
+        'hero.cta.contact': 'schreib mir',
+
+        'work.label':   'ausgewählte projekte',
+        'work.heading': 'meine arbeit',
+        'work.sub':     'Eine Auswahl — nicht alles, was ich gebaut habe, nur die Projekte, die mir im Kopf bleiben.',
+        'work.cta':     'case study ansehen',
+
+        'card.deepeye.title': 'Deepeye',
+        'card.deepeye.desc':  'KI-gestützte Netzhautdiagnostik — von der Feldforschung bis zur eigenständigen Ausgründung.',
+        'card.route.title':   'Westphalia Datalab Routenoptimierung',
+        'card.route.desc':    'KI-gestützte Routenplanung für Medikamentenlogistik — von der Idee bis zur Übergabe.',
+        'card.jobspr.title':  'Jobspreader',
+        'card.jobspr.desc':   'Iterative Produktentwicklung, strategische Initiativen und Teamführung — laufend.',
+        'card.vaps.title':    'VAPS BI Dashboard',
+        'card.vaps.desc':     'BI-Dashboard für den Volkswagen Audi Partner Service — Pilotprojekt mit echtem Rollout.',
+        'card.sales.title':   'Sales Suite: Company Screening',
+        'card.sales.desc':    'Das erste Feature einer modularen Sales Suite — von der Idee bis zum fertigen Figma-Design.',
+        'card.x4c.title':     'X-4C',
+        'card.x4c.desc':      'Ein KI-Prediction-Tool — UI und UX von null, mit nichts als einer Farbvorgabe.',
+
+        'about.label':   'über mich',
+        'about.heading': 'der Mensch hinter<br />den Pixeln',
+        'about.p1':      'Ich bin <strong>Thomas</strong> — UX Lead aus Lippstadt, remote tätig für <strong>Wollmilchsau</strong> in Hamburg. Ich gestalte seit 7 Jahren digitale Produkte, meist im KI-Umfeld, und habe <strong>Visual Computing & Design</strong> studiert.',
+        'about.p2':      'Meine Designphilosophie? <strong>Gutes Design macht sich unsichtbar.</strong> Das beste Interface ist das, das man nicht bemerkt. Ich obsesse über diesen reibungslosen Moment, wo einfach alles stimmt.',
+        'about.p3':      'Ich trainiere, koche, game — und tauche regelmäßig in Rabbit Holes ab. Japan fasziniert mich seit Jahren: Kultur, Reisen, Anime und Manga. Ich schaue Filme und lese, um zu entfliehen oder zu wachsen, selten irgendwas dazwischen.',
+        'about.book1.label': 'aktuell am lesen',
+        'about.book1.sub':   'Brandon Sanderson · Buch 3 der Mistborn-Reihe',
+        'about.book2.label': 'auch am lesen',
+        'about.films.label': 'zuletzt geschaut',
+
+        'career.label':        'erfahrung',
+        'career.stat.label':   'Jahre in der<br>Produktgestaltung',
+        'career.stat.sub':     'Von der Research bis zum Launch — über den gesamten UX-Stack, mit Fokus auf KI, B2B SaaS und Design Systems.',
+        'career.role1.title':  'UX Lead',
+        'career.role2.title':  'Freelance UX Designer',
+        'career.role2.company':'Selbstständig',
+        'career.role3.title':  'UX Designer',
+        'career.role5.title':  'Bauingenieurwesen',
+        'career.edu.studies':  'Studium',
+        'career.badge.current':'Aktuell',
+        'career.cta.linkedin': 'Vollständiger Lebenslauf auf LinkedIn',
+        'career.cta.cv':       'CV herunterladen',
+
+        'contact.label':        'kontakt',
+        'contact.heading':      'schreib mir.',
+        'contact.sub':          'Ob Projekt, Job oder einfach ein gutes Designgespräch — ich bin dabei.',
+        'contact.email.label':  'klicken zum kopieren',
+        'contact.email.title':  'E-Mail',
+        'contact.email.copied': 'E-Mail kopiert',
+        'contact.li.label':     'auf LinkedIn vernetzen',
+      },
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'en';
+    const langToggle = document.getElementById('langToggle');
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      langToggle.textContent = lang === 'en' ? 'DE' : 'EN';
+      const t = translations[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      // Re-measure dock width on lang change (text length may change)
+      expandedW = 0;
+    }
+
+    // Apply on load
+    setLang(currentLang);
+
+    langToggle.addEventListener('click', () => setLang(currentLang === 'en' ? 'de' : 'en'));
+
+    /* =====================================================
        THEME TOGGLE — dark / light
        ===================================================== */
 
@@ -2912,139 +3101,102 @@
     const projectData = {
       'sales-suite': {
         title: 'Sales Suite: Company Screening',
-        desc: 'The first feature of a modular sales suite — six individually bookable programmes, one shared platform.',
+        desc: { en: 'The first feature of a modular sales suite — six individually bookable programmes, one shared platform.', de: 'Das erste Feature einer modularen Sales Suite — sechs buchbare Programme, eine gemeinsame Plattform.' },
         tags: ['UX Research', 'Product Design', 'Figma'],
         meta: [
-          { label: 'Role', value: 'UX Lead' },
-          { label: 'Company', value: 'Wollmilchsau' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Lead' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Wollmilchsau' },
           { label: 'Tools', value: 'Figma' },
         ],
-        images: [
-          'images/projects/salessuite/salessuite_companyscreening02.png',
-          'images/projects/salessuite/salessuite_companyscreening03.png',
-          'images/projects/salessuite/salessuite_companyscreening04.png',
-          'images/projects/salessuite/salessuite_companyscreening01.png',
-        ],
+        images: ['images/projects/salessuite/salessuite_companyscreening02.png','images/projects/salessuite/salessuite_companyscreening03.png','images/projects/salessuite/salessuite_companyscreening04.png','images/projects/salessuite/salessuite_companyscreening01.png'],
         sections: [
-          { heading: 'The Problem', text: 'Within the Sales Suite — a platform bundling six individually bookable sales programmes — the first feature needed to be built: Company Screening.' },
-          { heading: 'What I Did', text: 'Together with my Product Owner, I turned a bare idea into a fully specified feature set using standard UX methods: discovery, wireframing, and a finished Figma design.' },
-          { heading: 'The Outcome', text: 'The final design went straight into development — a feature built around real user needs from day one, not retrofitted later.' },
+          { heading: { en: 'The Problem', de: 'Die Aufgabe' }, text: { en: 'Within the Sales Suite — a platform bundling six individually bookable sales programmes — the first feature needed to be built: Company Screening.', de: 'Innerhalb der Sales Suite — sechs einzeln buchbare Sales-Programme unter einem Dach — sollte das erste Feature entstehen: das Company Screening.' } },
+          { heading: { en: 'What I Did', de: 'Was ich gemacht habe' }, text: { en: 'Together with my Product Owner, I turned a bare idea into a fully specified feature set using standard UX methods: discovery, wireframing, and a finished Figma design.', de: 'Gemeinsam mit meinem Product Owner habe ich aus einer Idee alle Features mit UX-Methoden erarbeitet: Discovery, Wireframing, fertiges Figma-Design.' } },
+          { heading: { en: 'The Outcome', de: 'Das Ergebnis' }, text: { en: 'The final design went straight into development — a feature built around real user needs from day one, not retrofitted later.', de: 'Das finale Design ging direkt in die Entwicklung — ein Feature, das von Anfang an auf echte Nutzerbedürfnisse ausgerichtet war.' } },
         ],
       },
       'deepeye': {
         title: 'Deepeye',
         logo: 'images/projects/deepeye/deepeye.png',
         externalUrl: 'https://www.deepeye-medical.com/de',
-        externalLabel: 'Visit company website',
-        desc: 'An AI-assisted diagnostic tool for ophthalmologists — born from genuine field research, ended as a standalone company.',
+        externalLabel: { en: 'Visit company website', de: 'Zur Unternehmensseite' },
+        desc: { en: 'An AI-assisted diagnostic tool for ophthalmologists — born from genuine field research, ended as a standalone company.', de: 'KI-gestützte Netzhautdiagnostik für Augenärzte — aus echter Feldforschung entstanden, als Ausgründung geendet.' },
         tags: ['UX Research', 'Medical AI', 'CI Design', 'Startup'],
         meta: [
-          { label: 'Role', value: 'UX Designer' },
-          { label: 'Company', value: 'Westphalia Datalab' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Designer' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma, Arkandus' },
         ],
-        images: [
-          'images/projects/deepeye/deepeye04.png',
-          'images/projects/deepeye/deepeye03.png',
-          'images/projects/deepeye/deepeye02.png',
-          'images/projects/deepeye/deepeye01.png',
-        ],
+        images: ['images/projects/deepeye/deepeye04.png','images/projects/deepeye/deepeye03.png','images/projects/deepeye/deepeye02.png','images/projects/deepeye/deepeye01.png'],
         sections: [
-          { heading: 'The Problem', text: 'The goal was to build a tool that helps ophthalmologists diagnose retinal diseases using AI — a highly specialised instrument for a highly specialised environment.' },
-          { heading: 'What I Did', text: 'In collaboration with the eye centre at St. Franziskus Hospital in Münster, I visited on-site, tried the equipment the doctors used daily, and worked directly with them to gather requirements. Real users, real workflows, real problems.' },
-          { heading: 'The Outcome', text: 'Using everything gathered, I designed the complete CI and the tool itself. The project ended in a spin-off that operates as an independent company to this day.' },
+          { heading: { en: 'The Problem', de: 'Die Aufgabe' }, text: { en: 'The goal was to build a tool that helps ophthalmologists diagnose retinal diseases using AI — a highly specialised instrument for a highly specialised environment.', de: 'Ein Tool für Augenärzte, das mithilfe von KI bei der Diagnose von Netzhauterkrankungen hilft — hochspezialisiert, für ein hochspezialisiertes Umfeld.' } },
+          { heading: { en: 'What I Did', de: 'Was ich gemacht habe' }, text: { en: 'In collaboration with the eye centre at St. Franziskus Hospital in Münster, I visited on-site, tried the equipment the doctors used daily, and worked directly with them to gather requirements. Real users, real workflows, real problems.', de: 'In Zusammenarbeit mit dem Augenzentrum am St. Franziskus-Hospital in Münster war ich vor Ort, habe die Geräte ausprobiert und die Anforderungen direkt mit den Ärzten erarbeitet. Echte Nutzer, echte Workflows.' } },
+          { heading: { en: 'The Outcome', de: 'Das Ergebnis' }, text: { en: 'Using everything gathered, I designed the complete CI and the tool itself. The project ended in a spin-off that operates as an independent company to this day.', de: 'Mit den gesammelten Anforderungen habe ich die komplette CI und das Tool entwickelt. Das Projekt endete in einer Ausgründung, die bis heute als eigenständiges Unternehmen fungiert.' } },
         ],
       },
       'x4c': {
         title: 'X-4C',
-        desc: 'UI and UX for a drop-in AI prediction tool — scrapped multiple times, but the design held up.',
+        desc: { en: 'UI and UX for a drop-in AI prediction tool — scrapped multiple times, but the design held up.', de: 'UI und UX für ein KI-Prediction-Tool — mehrfach übern Haufen geworfen, aber das Design hielt.' },
         tags: ['UI Design', 'UX Design', 'AI', 'Data Visualization'],
         meta: [
-          { label: 'Role', value: 'UX Designer' },
-          { label: 'Company', value: 'Westphalia Datalab' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Designer' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        images: [
-          'images/projects/x4C/x4c04.png',
-          'images/projects/x4C/x4c03.png',
-          'images/projects/x4C/x4c06.png',
-          'images/projects/x4C/x4c02.png',
-          'images/projects/x4C/x4c01.png',
-          'images/projects/x4C/x4c05.png',
-        ],
+        images: ['images/projects/x4C/x4c04.png','images/projects/x4C/x4c03.png','images/projects/x4C/x4c06.png','images/projects/x4C/x4c02.png','images/projects/x4C/x4c01.png','images/projects/x4C/x4c05.png'],
         sections: [
-          { heading: 'The Problem', text: 'The task was to design a tool that lets you feed in any data and have the underlying AI compute a prediction. Open-ended, flexible, and complex.' },
-          { heading: 'What I Did', text: 'With minimal requirements but a fixed colour palette, I designed the UI and UX from the ground up — concept, wireframes, prototyping — all solo.' },
-          { heading: 'The Outcome', text: 'The designs came out solid. The product itself, however, was scrapped multiple times. A classic case: good design, troubled product path.' },
+          { heading: { en: 'The Problem', de: 'Die Aufgabe' }, text: { en: 'The task was to design a tool that lets you feed in any data and have the underlying AI compute a prediction. Open-ended, flexible, and complex.', de: 'Ein Tool konzipieren, in das man beliebige Daten kippen kann und die KI eine Vorhersage berechnet. Offen, flexibel und komplex.' } },
+          { heading: { en: 'What I Did', de: 'Was ich gemacht habe' }, text: { en: 'With minimal requirements but a fixed colour palette, I designed the UI and UX from the ground up — concept, wireframes, prototyping — all solo.', de: 'Ohne große Anforderungen, aber mit festgelegter Farbgebung habe ich UI und UX von Grund auf entworfen — Konzept, Wireframes, Prototyping — alles solo.' } },
+          { heading: { en: 'The Outcome', de: 'Das Ergebnis' }, text: { en: 'The designs came out solid. The product itself, however, was scrapped multiple times. A classic case: good design, troubled product path.', de: 'Die Designs waren solide. Das Produkt selbst wurde mehrfach übern Haufen geworfen. Klassischer Fall: gutes Design, schwieriger Produktweg.' } },
         ],
       },
       'vaps': {
         title: 'VAPS BI Dashboard',
-        desc: 'BI dashboard for Volkswagen Audi Partner Service — a pilot that made it into production.',
+        desc: { en: 'BI dashboard for Volkswagen Audi Partner Service — a pilot that made it into production.', de: 'BI-Dashboard für den Volkswagen Audi Partner Service — ein Pilot, der in die Entwicklung ging.' },
         tags: ['Dashboard Design', 'B2B', 'Stakeholder Management'],
         meta: [
-          { label: 'Role', value: 'UX Designer' },
-          { label: 'Company', value: 'Westphalia Datalab' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Designer' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        images: [
-          'images/projects/VAPS/VAPS01.png',
-          'images/projects/VAPS/VAPS04.png',
-          'images/projects/VAPS/VAPS03.png',
-          'images/projects/VAPS/VAPS02.png',
-        ],
+        images: ['images/projects/VAPS/VAPS01.png','images/projects/VAPS/VAPS04.png','images/projects/VAPS/VAPS03.png','images/projects/VAPS/VAPS02.png'],
         sections: [
-          { heading: 'The Problem', text: 'VAPS (Volkswagen Audi Partner Service) needed a dashboard built as a pilot product for one district — with the plan to roll it out nationwide if it succeeded.' },
-          { heading: 'What I Did', text: 'Working closely with the client and within the constraints of the existing tool UI, I designed the UX and UI and presented the results in stakeholder meetings.' },
-          { heading: 'The Outcome', text: 'The dashboard was rolled out in the pilot district and went into development with VAPS\'s in-house IT team. A product that made it from concept to real infrastructure.' },
+          { heading: { en: 'The Problem', de: 'Die Aufgabe' }, text: { en: 'VAPS (Volkswagen Audi Partner Service) needed a dashboard built as a pilot product for one district — with the plan to roll it out nationwide if it succeeded.', de: 'Für die VAPS sollte ein Dashboard als Testprodukt für einen Kreis entwickelt werden — mit dem Ziel, es bei Erfolg deutschlandweit zu vertreiben.' } },
+          { heading: { en: 'What I Did', de: 'Was ich gemacht habe' }, text: { en: 'Working closely with the client and within the constraints of the existing tool UI, I designed the UX and UI and presented the results in stakeholder meetings.', de: 'In enger Zusammenarbeit mit dem Kunden habe ich UX und UI konzipiert und die Ergebnisse in Stakeholder-Meetings präsentiert.' } },
+          { heading: { en: 'The Outcome', de: 'Das Ergebnis' }, text: { en: 'The dashboard was rolled out in the pilot district and went into development with VAPS\'s in-house IT team. A product that made it from concept to real infrastructure.', de: 'Das Dashboard wurde im Pilotkreis ausgerollt und ging mit der hauseigenen IT der VAPS in die Entwicklung. Vom Konzept in die echte Infrastruktur.' } },
         ],
       },
       'routenopt': {
         title: 'Routenoptimierung',
-        desc: 'From idea to handoff: an AI-powered route planning tool for medication logistics.',
+        desc: { en: 'From idea to handoff: an AI-powered route planning tool for medication logistics.', de: 'Von der Idee bis zur Übergabe: KI-gestützte Routenplanung für Medikamentenlogistik.' },
         tags: ['UX Design', 'AI', 'Route Optimization', 'Healthcare'],
         meta: [
-          { label: 'Role', value: 'UX Designer' },
-          { label: 'Company', value: 'Westphalia Datalab' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Designer' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        images: [
-          'images/projects/routenoptimierung/routenoptimierung02.png',
-          'images/projects/routenoptimierung/routenoptimierung07.png',
-          'images/projects/routenoptimierung/routenoptimierung04.png',
-          'images/projects/routenoptimierung/routenoptimierung05.png',
-          'images/projects/routenoptimierung/routenoptimierung01.png',
-          'images/projects/routenoptimierung/routenoptimierung03.png',
-          'images/projects/routenoptimierung/routenoptimierung06.png',
-        ],
+        images: ['images/projects/routenoptimierung/routenoptimierung02.png','images/projects/routenoptimierung/routenoptimierung07.png','images/projects/routenoptimierung/routenoptimierung04.png','images/projects/routenoptimierung/routenoptimierung05.png','images/projects/routenoptimierung/routenoptimierung01.png','images/projects/routenoptimierung/routenoptimierung03.png','images/projects/routenoptimierung/routenoptimierung06.png'],
         sections: [
-          { heading: 'The Problem', text: 'A medication logistics association needed a route optimisation tool — with requirements covering shift planning and AI-assisted routing.' },
-          { heading: 'What I Did', text: 'Working closely with the client, I took the tool from idea to finalised UI and UX: discovery, concept, wireframes, finished design — the full stack.' },
-          { heading: 'The Outcome', text: 'The tool went into development and was handed over to the client. A project that proves good UX makes a real difference even in highly specialised domains.' },
+          { heading: { en: 'The Problem', de: 'Die Aufgabe' }, text: { en: 'A medication logistics association needed a route optimisation tool — with requirements covering shift planning and AI-assisted routing.', de: 'Für einen Verband in der Medikamentenlogistik sollte ein Routenoptimierungstool entstehen — mit Einsatzplanung und KI-gestützter Routenberechnung.' } },
+          { heading: { en: 'What I Did', de: 'Was ich gemacht habe' }, text: { en: 'Working closely with the client, I took the tool from idea to finalised UI and UX: discovery, concept, wireframes, finished design — the full stack.', de: 'In enger Zusammenarbeit mit dem Kunden habe ich das Tool von der Idee bis zur finalisierten UI und UX umgesetzt: Discovery, Konzept, Wireframes, finales Design.' } },
+          { heading: { en: 'The Outcome', de: 'Das Ergebnis' }, text: { en: 'The tool went into development and was handed over to the client. A project that proves good UX makes a real difference even in highly specialised domains.', de: 'Das Tool ist in die Entwicklung gegangen und wurde dem Kunden übergeben. Ein Projekt, das zeigt, dass gute UX auch in spezialisierten Domänen einen Unterschied macht.' } },
         ],
       },
       'jobspreader': {
         title: 'Jobspreader',
-        desc: 'Ongoing product. Iterative development, strategic initiatives and team leadership.',
+        desc: { en: 'Ongoing product. Iterative development, strategic initiatives and team leadership.', de: 'Laufendes Produkt. Iterative Weiterentwicklung, strategische Initiativen und Teamführung.' },
         tags: ['Product Design', 'Strategy', 'Team Lead', 'Ongoing'],
         meta: [
-          { label: 'Role', value: 'UX Lead' },
-          { label: 'Company', value: 'Wollmilchsau' },
-          { label: 'Status', value: 'Ongoing' },
+          { label: { en: 'Role', de: 'Rolle' }, value: 'UX Lead' },
+          { label: { en: 'Company', de: 'Unternehmen' }, value: 'Wollmilchsau' },
+          { label: { en: 'Status', de: 'Status' }, value: { en: 'Ongoing', de: 'Laufend' } },
           { label: 'Tools', value: 'Figma, Notion' },
         ],
-        images: [
-          'images/projects/jobspreader/jobspreader01.png',
-          'images/projects/jobspreader/jobspreader02.png',
-          'images/projects/jobspreader/jobspreader03.png',
-          'images/projects/jobspreader/jobspreader04.png',
-          'images/projects/jobspreader/jobspreader05.png',
-          'images/projects/jobspreader/jobspreader06.png',
-        ],
+        images: ['images/projects/jobspreader/jobspreader01.png','images/projects/jobspreader/jobspreader02.png','images/projects/jobspreader/jobspreader03.png','images/projects/jobspreader/jobspreader04.png','images/projects/jobspreader/jobspreader05.png','images/projects/jobspreader/jobspreader06.png'],
         sections: [
-          { heading: 'What I Do', text: 'Jobspreader is a B2B platform for distributing job listings. As UX Lead, I develop the product iteratively — from ideation and new features to refining existing flows. I always start from the user\'s perspective: what creates friction, what\'s missing, what could be more elegant.' },
-          { heading: 'Team Leadership', text: 'I work closely with a development team in India and make sure design intent actually lands in the implementation. Clear specs, structured communication, and enough context for the team to make good decisions — even without me in the loop.' },
-          { heading: 'What Comes Out of It', text: 'User feedback has improved — through both large strategic redesigns like "Simplify" that rethink the product from the ground up, and consistent attention to detail in everyday work. Catching problems early, iterating until solutions feel right.' },
+          { heading: { en: 'What I Do', de: 'Was ich mache' }, text: { en: 'Jobspreader is a B2B platform for distributing job listings. As UX Lead, I develop the product iteratively — from ideation and new features to refining existing flows. I always start from the user\'s perspective: what creates friction, what\'s missing, what could be more elegant.', de: 'Jobspreader ist eine B2B-Plattform für Stellenanzeigen. Als UX Lead entwickle ich das Produkt iterativ weiter — von der Ideenfindung über neue Features bis zur Optimierung bestehender Flows. Immer vom Nutzer aus gedacht.' } },
+          { heading: { en: 'Team Leadership', de: 'Teamführung' }, text: { en: 'I work closely with a development team in India and make sure design intent actually lands in the implementation. Clear specs, structured communication, and enough context for the team to make good decisions — even without me in the loop.', de: 'Ich arbeite eng mit einem Entwicklerteam in Indien zusammen und sorge dafür, dass Design-Intentionen in der Implementierung ankommen. Klare Specs, strukturierte Kommunikation, genug Kontext für eigenständige Entscheidungen.' } },
+          { heading: { en: 'What Comes Out of It', de: 'Was dabei rauskommt' }, text: { en: 'User feedback has improved — through both large strategic redesigns like "Simplify" that rethink the product from the ground up, and consistent attention to detail in everyday work. Catching problems early, iterating until solutions feel right.', de: 'Nutzerfeedback ist besser geworden — durch strategische Redesigns wie "Simplify" und konsequente Detailarbeit im Alltag. Probleme früh erkennen, Lösungen iterieren bis sie sich richtig anfühlen.' } },
         ],
       },
     };
@@ -3189,6 +3341,9 @@
     let   isAnimating      = false;
 
     function populateModal(p) {
+      const L = currentLang || 'en';
+      const str = v => (typeof v === 'object' && v !== null) ? (v[L] ?? v.en) : v;
+
       buildViewer(p.images || []);
 
       document.getElementById('modalTags').innerHTML = p.tags
@@ -3201,25 +3356,26 @@
         titleEl.textContent = p.title;
       }
 
+      const extLabel = str(p.externalLabel) || 'Website';
       const extEl = document.getElementById('modalExternalLink');
       extEl.innerHTML = p.externalUrl
         ? `<a class="project-modal__external-btn" href="${p.externalUrl}" target="_blank" rel="noopener noreferrer">
-            ${p.externalLabel || 'Website'}
+            ${extLabel}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
               <path d="M2.5 9.5l7-7M5 2.5h4.5V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>`
         : '';
 
-      document.getElementById('modalDesc').textContent = p.desc;
+      document.getElementById('modalDesc').textContent = str(p.desc);
       document.getElementById('modalMeta').innerHTML = p.meta
         .map(m => `<div class="project-modal__meta-item">
-          <span class="project-modal__meta-label">${m.label}</span>
-          <span class="project-modal__meta-value">${m.value}</span>
+          <span class="project-modal__meta-label">${str(m.label)}</span>
+          <span class="project-modal__meta-value">${str(m.value)}</span>
         </div>`).join('');
       document.getElementById('modalBody').innerHTML = p.sections
-        .map(s => `<p class="project-modal__section-heading">${s.heading}</p>
-          <p class="project-modal__section-text">${s.text}</p>`).join('');
+        .map(s => `<p class="project-modal__section-heading">${str(s.heading)}</p>
+          <p class="project-modal__section-text">${str(s.text)}</p>`).join('');
     }
 
     function updateProjectNavBtns() {
