@@ -1118,6 +1118,15 @@
       margin-bottom: var(--space-sm);
     }
 
+    .project-modal__title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      margin-bottom: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
     .project-modal__title {
       font-family: var(--font-heading);
       font-size: clamp(1.5rem, 4vw, 2.2rem);
@@ -1125,7 +1134,34 @@
       color: var(--text-primary);
       line-height: 1.1;
       letter-spacing: -0.02em;
-      margin-bottom: var(--space-sm);
+      margin: 0;
+    }
+
+    .project-modal__logo {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    .project-modal__external-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      border: 1.5px solid rgba(245, 200, 66, 0.4);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: border-color var(--transition-base), background var(--transition-base);
+      flex-shrink: 0;
+    }
+
+    .project-modal__external-btn:hover {
+      border-color: var(--accent);
+      background: rgba(245, 200, 66, 0.06);
     }
 
     .project-modal__desc {
@@ -2435,7 +2471,10 @@
       </div>
       <div class="project-modal__content">
         <div class="project-modal__tags" id="modalTags"></div>
-        <h2 class="project-modal__title" id="modalTitle"></h2>
+        <div class="project-modal__title-row">
+          <h2 class="project-modal__title" id="modalTitle"></h2>
+          <div id="modalExternalLink"></div>
+        </div>
         <p class="project-modal__desc" id="modalDesc"></p>
         <div class="project-modal__meta" id="modalMeta"></div>
         <div id="modalBody"></div>
@@ -2827,6 +2866,9 @@
       },
       'deepeye': {
         title: 'Deepeye',
+        logo: 'images/projects/deepeye/67091962793130378bf8ab95_Filaments Hero Bloc.svg',
+        externalUrl: 'https://www.deepeye-medical.com/de',
+        externalLabel: 'Zur Unternehmensseite',
         desc: 'Ein AI-gestütztes Diagnosetool für Augenärzte — entstanden aus echter Feldforschung, geendet als eigenständiges Unternehmen.',
         tags: ['UX Research', 'Medical AI', 'CI Design', 'Startup'],
         meta: [
@@ -3072,8 +3114,24 @@
 
       document.getElementById('modalTags').innerHTML = p.tags
         .map(t => `<span class="card__tag">${t}</span>`).join('');
-      document.getElementById('modalTitle').textContent = p.title;
-      document.getElementById('modalDesc').textContent  = p.desc;
+      const titleEl = document.getElementById('modalTitle');
+      if (p.logo) {
+        titleEl.innerHTML = `<img class="project-modal__logo" src="${p.logo}" alt="${p.title}" />`;
+      } else {
+        titleEl.textContent = p.title;
+      }
+
+      const extEl = document.getElementById('modalExternalLink');
+      extEl.innerHTML = p.externalUrl
+        ? `<a class="project-modal__external-btn" href="${p.externalUrl}" target="_blank" rel="noopener noreferrer">
+            ${p.externalLabel || 'Website'}
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2.5 9.5l7-7M5 2.5h4.5V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>`
+        : '';
+
+      document.getElementById('modalDesc').textContent = p.desc;
       document.getElementById('modalMeta').innerHTML = p.meta
         .map(m => `<div class="project-modal__meta-item">
           <span class="project-modal__meta-label">${m.label}</span>
