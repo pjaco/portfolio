@@ -1708,11 +1708,24 @@
       margin-bottom: 8px;
     }
 
+    .career__stat-sub-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
     .career__stat-sub {
       font-size: 0.95rem;
       color: var(--text-muted);
       line-height: 1.6;
       max-width: 420px;
+      flex: 1;
+    }
+
+    .career__cv-inline {
+      flex-shrink: 0;
+      align-self: center;
     }
 
     /* Role rows */
@@ -2415,7 +2428,16 @@
           <span class="career__stat">07</span>
           <div class="career__stat-aside">
             <div class="career__stat-label" data-i18n-html="career.stat.label">years shaping<br>digital products</div>
-            <div class="career__stat-sub" data-i18n="career.stat.sub">From research to shipped — I work across the full UX stack, with a focus on AI products, B2B SaaS, and design systems.</div>
+            <div class="career__stat-sub-row">
+              <div class="career__stat-sub" data-i18n="career.stat.sub">From research to shipped — I work across the full UX stack, with a focus on AI products, B2B SaaS, and design systems.</div>
+              <!-- // TODO: replace href with actual CV file path -->
+              <a href="#" class="btn btn--outline btn--sm career__cv-inline" download>
+                <span data-i18n="career.cta.cv">Download CV</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M7 2v8M3 7l4 4 4-4M2 12h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -2467,13 +2489,6 @@
 
         <!-- LinkedIn CTA -->
         <div class="career__cta reveal reveal-delay-2">
-          <!-- // TODO: replace href with actual CV file path, e.g. href="/thomas-skowronek-cv.pdf" -->
-          <a href="#" class="btn btn--outline btn--sm" download>
-            <span data-i18n="career.cta.cv">Download CV</span>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M7 2v8M3 7l4 4 4-4M2 12h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
           <a href="https://www.linkedin.com/in/thoskowronek/" target="_blank" rel="noopener noreferrer" class="career__linkedin-btn">
             <span data-i18n="career.cta.linkedin">Full career on LinkedIn</span>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
