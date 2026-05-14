@@ -828,38 +828,281 @@
       border-color: var(--text-muted);
     }
 
-    .project-modal__screenshots {
-      display: flex;
-      gap: var(--space-sm);
-      overflow-x: auto;
-      padding: var(--space-lg) var(--space-lg) 0;
-      scrollbar-width: none;
-    }
-
-    .project-modal__screenshots::-webkit-scrollbar { display: none; }
-
-    .project-modal__screenshot {
-      flex-shrink: 0;
-      width: 320px;
-      height: 200px;
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+    /* ── Screenshot Viewer ── */
+    .screenshot-viewer {
+      position: relative;
+      width: 100%;
       overflow: hidden;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
 
-    .project-modal__screenshot img {
+    .screenshot-viewer__track {
+      display: flex;
+      transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .screenshot-viewer__slide {
+      flex-shrink: 0;
+      width: 100%;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      cursor: zoom-in;
+      background: var(--surface);
+    }
+
+    .screenshot-viewer__slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.45s ease, filter 0.3s ease;
+    }
+
+    .screenshot-viewer__slide:hover img {
+      transform: scale(1.04);
+      filter: brightness(1.08);
+    }
+
+    /* Dark scrim + zoom icon on hover */
+    .screenshot-viewer__slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+
+    .screenshot-viewer__slide:hover::after {
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .screenshot-viewer__zoom {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      opacity: 0;
+      color: #fff;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .screenshot-viewer__slide:hover .screenshot-viewer__zoom {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Placeholder slide (no image) */
+    .screenshot-viewer__placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--surface);
+    }
+
+    /* Prev / Next buttons */
+    .screenshot-viewer__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(10, 10, 10, 0.55);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease, background 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .screenshot-viewer:hover .screenshot-viewer__nav,
+    .screenshot-viewer__nav:focus-visible { opacity: 1; }
+
+    @media (hover: none) { .screenshot-viewer__nav { opacity: 1 !important; } }
+
+    .screenshot-viewer__nav:hover {
+      background: rgba(10, 10, 10, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .screenshot-viewer__nav:disabled {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    .screenshot-viewer__nav--prev { left: 14px; }
+    .screenshot-viewer__nav--next { right: 14px; }
+
+    /* Dots */
+    .screenshot-viewer__dots {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+      padding: 12px 0 10px;
+    }
+
+    .screenshot-viewer__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .screenshot-viewer__dot.is-active {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    @media (max-width: 600px) {
+      .screenshot-viewer__slide { height: 220px; }
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 60px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .lightbox.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.93);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .lightbox__close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .lightbox__close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.12) rotate(90deg);
+    }
+
+    .lightbox__viewer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      max-width: 100%;
+    }
+
+    .lightbox__img-wrap {
+      max-width: calc(100vw - 160px);
+      max-height: 82vh;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.25s ease;
+    }
+
+    .lightbox__img-wrap.is-transitioning {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    .lightbox__img-wrap img {
+      max-width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      border-radius: var(--radius-md);
+    }
+
+    .lightbox__btn {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      transition: background 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .lightbox__btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: scale(1.12);
+    }
+
+    .lightbox__btn:disabled { opacity: 0.25; pointer-events: none; }
+
+    .lightbox__counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 600px) {
+      .lightbox { padding: 60px 0 60px; }
+      .lightbox__img-wrap { max-width: 100vw; border-radius: 0; }
+      .lightbox__btn { display: none; }
     }
 
     .project-modal__content {
@@ -939,8 +1182,6 @@
 
     @media (max-width: 600px) {
       .project-modal__panel { max-height: 95vh; border-radius: var(--radius-lg); }
-      .project-modal__screenshots { padding: var(--space-md) var(--space-md) 0; }
-      .project-modal__screenshot { width: 240px; height: 150px; }
       .project-modal__content { padding: var(--space-md); }
     }
 
@@ -2180,7 +2421,16 @@
           <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </button>
-      <div class="project-modal__screenshots" id="modalScreenshots"></div>
+      <div class="screenshot-viewer" id="screenshotViewer">
+        <div class="screenshot-viewer__track" id="screenshotTrack"></div>
+        <button class="screenshot-viewer__nav screenshot-viewer__nav--prev" id="shotPrev" aria-label="Previous screenshot">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M11 14L6 9l5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="screenshot-viewer__nav screenshot-viewer__nav--next" id="shotNext" aria-label="Next screenshot">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="screenshot-viewer__dots" id="shotDots"></div>
+      </div>
       <div class="project-modal__content">
         <div class="project-modal__tags" id="modalTags"></div>
         <h2 class="project-modal__title" id="modalTitle"></h2>
@@ -2189,6 +2439,28 @@
         <div id="modalBody"></div>
       </div>
     </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+    <button class="lightbox__close" id="lightboxClose" aria-label="Schließen">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="lightbox__viewer">
+      <button class="lightbox__btn lightbox__btn--prev" id="lightboxPrev" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M13 16L7 10l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lightbox__img-wrap" id="lightboxImgWrap">
+        <img id="lightboxImg" alt="" />
+      </div>
+      <button class="lightbox__btn lightbox__btn--next" id="lightboxNext" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="lightbox__counter" id="lightboxCounter"></div>
   </div>
 
   <!-- ===== FOOTER ===== -->
@@ -2658,42 +2930,153 @@
       },
     };
 
-    const modal        = document.getElementById('projectModal');
-    const modalClose   = document.getElementById('modalClose');
+    const modal         = document.getElementById('projectModal');
+    const modalClose    = document.getElementById('modalClose');
     const modalBackdrop = document.getElementById('modalBackdrop');
+    const shotTrack     = document.getElementById('screenshotTrack');
+    const shotDotsEl    = document.getElementById('shotDots');
+    const shotPrev      = document.getElementById('shotPrev');
+    const shotNext      = document.getElementById('shotNext');
 
+    /* ── Swipe helper ── */
+    function addSwipe(el, onLeft, onRight) {
+      let sx = 0;
+      el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+      el.addEventListener('touchend',   e => {
+        const dx = e.changedTouches[0].clientX - sx;
+        if (Math.abs(dx) > 44) { dx < 0 ? onLeft() : onRight(); }
+      }, { passive: true });
+    }
+
+    /* ── Screenshot viewer ── */
+    let shotImages = [];
+    let shotIdx    = 0;
+
+    function shotGoTo(idx, skipAnim) {
+      shotIdx = Math.max(0, Math.min(idx, shotImages.length - 1));
+      if (skipAnim) {
+        shotTrack.style.transition = 'none';
+        shotTrack.style.transform  = `translateX(-${shotIdx * 100}%)`;
+        requestAnimationFrame(() => { shotTrack.style.transition = ''; });
+      } else {
+        shotTrack.style.transform = `translateX(-${shotIdx * 100}%)`;
+      }
+      shotDotsEl.querySelectorAll('.screenshot-viewer__dot').forEach((d, i) =>
+        d.classList.toggle('is-active', i === shotIdx));
+      shotPrev.disabled = shotIdx === 0;
+      shotNext.disabled = shotIdx === shotImages.length - 1;
+    }
+
+    function buildViewer(images) {
+      shotImages = images || [];
+      shotIdx    = 0;
+
+      if (shotImages.length === 0) {
+        shotTrack.innerHTML   = `<div class="screenshot-viewer__slide"><div class="screenshot-viewer__placeholder">screenshots coming soon</div></div>`;
+        shotDotsEl.innerHTML  = '';
+        shotPrev.disabled     = true;
+        shotNext.disabled     = true;
+        return;
+      }
+
+      shotTrack.innerHTML = shotImages.map((src, i) => `
+        <div class="screenshot-viewer__slide" data-index="${i}">
+          <img src="${src}" alt="Screenshot ${i + 1}" loading="lazy" />
+          <div class="screenshot-viewer__zoom" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle cx="12" cy="12" r="8" stroke="white" stroke-width="1.8"/>
+              <path d="M18 18l6 6" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 12h6M12 9v6" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>`).join('');
+
+      shotDotsEl.innerHTML = shotImages.map((_, i) =>
+        `<button class="screenshot-viewer__dot${i === 0 ? ' is-active' : ''}" data-i="${i}" aria-label="Screenshot ${i + 1}"></button>`
+      ).join('');
+
+      shotGoTo(0, true);
+
+      // Dot clicks
+      shotDotsEl.querySelectorAll('.screenshot-viewer__dot').forEach(d =>
+        d.addEventListener('click', () => shotGoTo(+d.dataset.i)));
+
+      // Slide click → lightbox
+      shotTrack.querySelectorAll('.screenshot-viewer__slide').forEach(slide =>
+        slide.addEventListener('click', () => openLightbox(shotImages, +slide.dataset.index)));
+    }
+
+    shotPrev.addEventListener('click', () => shotGoTo(shotIdx - 1));
+    shotNext.addEventListener('click', () => shotGoTo(shotIdx + 1));
+    addSwipe(document.getElementById('screenshotViewer'),
+      () => shotGoTo(shotIdx + 1),
+      () => shotGoTo(shotIdx - 1));
+
+    /* ── Lightbox ── */
+    const lightbox       = document.getElementById('lightbox');
+    const lightboxImg    = document.getElementById('lightboxImg');
+    const lightboxImgWrap = document.getElementById('lightboxImgWrap');
+    const lightboxPrev   = document.getElementById('lightboxPrev');
+    const lightboxNext   = document.getElementById('lightboxNext');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+
+    let lbImages = [];
+    let lbIdx    = 0;
+
+    function lbUpdateCounter() {
+      lightboxCounter.textContent = `${lbIdx + 1} / ${lbImages.length}`;
+      lightboxPrev.disabled = lbIdx === 0;
+      lightboxNext.disabled = lbIdx === lbImages.length - 1;
+    }
+
+    function lbGoTo(idx) {
+      if (idx < 0 || idx >= lbImages.length) return;
+      lbIdx = idx;
+
+      lightboxImgWrap.classList.add('is-transitioning');
+      setTimeout(() => {
+        lightboxImg.src = lbImages[lbIdx];
+        lightboxImgWrap.classList.remove('is-transitioning');
+        lbUpdateCounter();
+      }, 220);
+    }
+
+    function openLightbox(images, startIdx) {
+      lbImages = images;
+      lbIdx    = startIdx ?? 0;
+      lightboxImg.src = lbImages[lbIdx];
+      lbUpdateCounter();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+
+    lightboxPrev.addEventListener('click', () => lbGoTo(lbIdx - 1));
+    lightboxNext.addEventListener('click', () => lbGoTo(lbIdx + 1));
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
+    addSwipe(lightbox, () => lbGoTo(lbIdx + 1), () => lbGoTo(lbIdx - 1));
+
+    /* ── Modal open/close ── */
     function openModal(projectId) {
       const p = projectData[projectId];
       if (!p) return;
 
-      // Screenshots
-      const shots = document.getElementById('modalScreenshots');
-      if (p.images?.length) {
-        shots.innerHTML = p.images.map((src, i) =>
-          `<div class="project-modal__screenshot"><img src="${src}" alt="Screenshot ${i + 1}" loading="lazy" /></div>`
-        ).join('');
-      } else {
-        shots.innerHTML = Array.from({ length: p.screenshots || 4 }, (_, i) =>
-          `<div class="project-modal__screenshot"><span>screenshot ${i + 1}</span></div>`
-        ).join('');
-      }
+      buildViewer(p.images || []);
 
-      // Tags
       document.getElementById('modalTags').innerHTML = p.tags
         .map(t => `<span class="card__tag">${t}</span>`).join('');
-
-      // Title + desc
       document.getElementById('modalTitle').textContent = p.title;
       document.getElementById('modalDesc').textContent  = p.desc;
-
-      // Meta
       document.getElementById('modalMeta').innerHTML = p.meta
         .map(m => `<div class="project-modal__meta-item">
           <span class="project-modal__meta-label">${m.label}</span>
           <span class="project-modal__meta-value">${m.value}</span>
         </div>`).join('');
-
-      // Sections
       document.getElementById('modalBody').innerHTML = p.sections
         .map(s => `<p class="project-modal__section-heading">${s.heading}</p>
           <p class="project-modal__section-text">${s.text}</p>`).join('');
@@ -2719,7 +3102,20 @@
 
     modalClose.addEventListener('click', closeModal);
     modalBackdrop.addEventListener('click', closeModal);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (lightbox.classList.contains('is-open')) { closeLightbox(); return; }
+        if (modal.classList.contains('is-open')) closeModal();
+      }
+      if (lightbox.classList.contains('is-open')) {
+        if (e.key === 'ArrowLeft')  lbGoTo(lbIdx - 1);
+        if (e.key === 'ArrowRight') lbGoTo(lbIdx + 1);
+      }
+      if (modal.classList.contains('is-open') && !lightbox.classList.contains('is-open')) {
+        if (e.key === 'ArrowLeft')  shotGoTo(shotIdx - 1);
+        if (e.key === 'ArrowRight') shotGoTo(shotIdx + 1);
+      }
+    });
 
     /* =====================================================
        SMOOTH SCROLL — top clearance for fixed logo bar
