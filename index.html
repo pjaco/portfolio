@@ -3004,8 +3004,18 @@
         if (t[key] !== undefined) el.innerHTML = t[key];
       });
 
-      // Re-measure dock width on lang change (text length may change)
+      // Re-measure dock if currently expanded — text length may have changed
       expandedW = 0;
+      requestAnimationFrame(() => {
+        try {
+          if (isDockExpanded) {
+            measureExpandedWidth();
+            dockInner.style.transition = 'none';
+            dockInner.style.width = expandedW + 'px';
+            requestAnimationFrame(() => { dockInner.style.transition = ''; });
+          }
+        } catch (_) {}
+      });
     }
 
     // Apply on load
