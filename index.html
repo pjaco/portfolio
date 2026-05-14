@@ -658,6 +658,13 @@
       background: linear-gradient(135deg, #2e1a1a 0%, #4a2020 50%, #2a1010 100%);
     }
 
+    .card--sales   .card__thumbnail { background: linear-gradient(135deg, #0d1b38 0%, #1a3266 50%, #0a1228 100%); }
+    .card--deepeye .card__thumbnail { background: linear-gradient(135deg, #0a2020 0%, #0f3535 50%, #071515 100%); }
+    .card--x4c     .card__thumbnail { background: linear-gradient(135deg, #1e0f00 0%, #3d2200 50%, #130a00 100%); }
+    .card--vaps    .card__thumbnail { background: linear-gradient(135deg, #0a0f30 0%, #161e55 50%, #070b20 100%); }
+    .card--route   .card__thumbnail { background: linear-gradient(135deg, #0a1e10 0%, #143020 50%, #06110a 100%); }
+    .card--jobspr  .card__thumbnail { background: linear-gradient(135deg, #1e1500 0%, #352200 50%, #140e00 100%); }
+
     .card__thumb-inner {
       width: 100%;
       height: 100%;
@@ -719,111 +726,210 @@
       border-color: var(--accent);
     }
 
-    .card__expand-btn {
-      display: flex;
+    /* "View case study" arrow link */
+    .card__cta {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
       font-size: 0.82rem;
       font-weight: 600;
       color: var(--accent);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
+      margin-top: auto;
+      padding-top: var(--space-sm);
       transition: gap var(--transition-base);
     }
 
-    .card__expand-btn:hover {
-      gap: 12px;
+    .card:hover .card__cta { gap: 13px; }
+
+    /* ============================= */
+    /* ===== PROJECT MODAL ===== */
+    /* ============================= */
+
+    .project-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.28s ease;
     }
 
-    .card__expand-btn svg {
-      transition: transform var(--transition-base);
+    .project-modal.is-open {
+      opacity: 1;
+      pointer-events: all;
     }
 
-    .card__expand-btn.is-open svg {
-      transform: rotate(180deg);
+    .project-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    /* Expandable card detail */
-    .card__detail {
-      max-height: 0;
+    .project-modal__panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 880px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      transform: scale(0.94) translateY(20px);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .project-modal.is-open .project-modal__panel {
+      transform: scale(1) translateY(0);
+    }
+
+    .project-modal__close {
+      position: sticky;
+      top: var(--space-md);
+      float: right;
+      margin: var(--space-md) var(--space-md) calc(-36px - var(--space-md)) 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      flex-shrink: 0;
+      transition: color var(--transition-base), border-color var(--transition-base);
+    }
+
+    .project-modal__close:hover {
+      color: var(--text-primary);
+      border-color: var(--text-muted);
+    }
+
+    .project-modal__screenshots {
+      display: flex;
+      gap: var(--space-sm);
+      overflow-x: auto;
+      padding: var(--space-lg) var(--space-lg) 0;
+      scrollbar-width: none;
+    }
+
+    .project-modal__screenshots::-webkit-scrollbar { display: none; }
+
+    .project-modal__screenshot {
+      flex-shrink: 0;
+      width: 320px;
+      height: 200px;
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
       overflow: hidden;
-      transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .card__detail.is-open {
-      max-height: 900px;
+    .project-modal__screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .card__detail-inner {
-      padding: 0 var(--space-md) var(--space-md);
-      border-top: 1px solid var(--border);
-      margin-top: var(--space-sm);
-      padding-top: var(--space-md);
+    .project-modal__content {
+      padding: var(--space-lg);
     }
 
-    .card__meta {
+    .project-modal__tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: var(--space-md);
+      gap: 8px;
+      margin-bottom: var(--space-sm);
     }
 
-    .card__meta-item {
+    .project-modal__title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 900;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .project-modal__desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: var(--space-lg);
+      max-width: 640px;
+    }
+
+    .project-modal__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      padding: var(--space-md) 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-lg);
+    }
+
+    .project-modal__meta-item {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
 
-    .card__meta-label {
-      font-size: 0.68rem;
+    .project-modal__meta-label {
+      font-size: 0.65rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--accent);
     }
 
-    .card__meta-value {
-      font-size: 0.85rem;
+    .project-modal__meta-value {
+      font-size: 0.88rem;
       color: var(--text-primary);
     }
 
-    .card__section-title {
+    .project-modal__section-heading {
       font-family: var(--font-heading);
-      font-size: 0.85rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--text-primary);
-      margin: var(--space-sm) 0 6px;
+      color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .card__section-text {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .card__close-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      letter-spacing: 0.1em;
       margin-top: var(--space-md);
-      padding: 8px 18px;
-      border-radius: var(--radius-pill);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      border: 1.5px solid var(--border);
-      background: none;
-      cursor: pointer;
-      transition: color var(--transition-base), border-color var(--transition-base);
+      margin-bottom: 8px;
     }
 
-    .card__close-btn:hover {
-      color: var(--text-primary);
-      border-color: var(--text-muted);
+    .project-modal__section-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.78;
+    }
+
+    @media (max-width: 600px) {
+      .project-modal__panel { max-height: 95vh; border-radius: var(--radius-lg); }
+      .project-modal__screenshots { padding: var(--space-md) var(--space-md) 0; }
+      .project-modal__screenshot { width: 240px; height: 150px; }
+      .project-modal__content { padding: var(--space-md); }
     }
 
     /* ============================= */
@@ -1746,183 +1852,91 @@
 
         <div class="work__grid">
 
-          <!-- ===== CARD 1: Project Alpha ===== -->
-          <!-- // TODO: replace with real project data -->
-          <article class="card card--alpha reveal reveal-delay-1">
-            <div class="card__thumbnail">
-              <!-- // replace with project screenshot -->
-              <div class="card__thumb-inner">
-                <span class="card__thumb-label">project screenshot</span>
-              </div>
-            </div>
+          <article class="card card--sales reveal reveal-delay-1" data-project="sales-suite">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
             <div class="card__body">
-              <h3 class="card__title">Project Alpha</h3>
-              <p class="card__desc">AI-powered UX tool redesign — making machine intelligence feel human.</p>
+              <h3 class="card__title">Sales Suite: Company Screening</h3>
+              <p class="card__desc">Das erste Feature einer modularen Sales Suite — von der Idee bis zum fertigen Figma-Design.</p>
               <div class="card__tags">
                 <span class="card__tag">UX Research</span>
-                <span class="card__tag">AI</span>
-                <span class="card__tag">Redesign</span>
+                <span class="card__tag">Product Design</span>
+                <span class="card__tag">Figma</span>
               </div>
-              <button class="card__expand-btn" aria-expanded="false" aria-controls="detail-alpha">
-                view case study
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-            <div class="card__detail" id="detail-alpha">
-              <div class="card__detail-inner">
-                <div class="card__meta">
-                  <!-- // TODO: replace with actual role, timeline, tools -->
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Role</span>
-                    <span class="card__meta-value">UX Lead</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Timeline</span>
-                    <span class="card__meta-value">6 months</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Tools</span>
-                    <span class="card__meta-value">Figma, Maze, Hotjar</span>
-                  </div>
-                </div>
-                <p class="card__section-title">the problem</p>
-                <!-- // TODO: replace with real problem statement -->
-                <p class="card__section-text">Users found the existing AI tool intimidating and opaque. Trust was low, task completion was lower. The interface communicated "here is our technology" instead of "here is your answer."</p>
-                <p class="card__section-title">the approach</p>
-                <!-- // TODO: replace with real approach/key decisions -->
-                <p class="card__section-text">Led discovery with 14 user interviews across three personas. Reframed the product around outcomes rather than capabilities. Introduced progressive disclosure so power features never overwhelmed first-time users.</p>
-                <p class="card__section-title">the outcome</p>
-                <!-- // TODO: replace with real outcome/metrics -->
-                <p class="card__section-text">Task success rate up 38%. Time-to-value dropped from 4.2 minutes to 90 seconds. NPS moved from +12 to +54 in three months post-launch.</p>
-                <button class="card__close-btn">
-                  collapse
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M6 10V2M2 6l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
-          <!-- ===== CARD 2: Project Beta ===== -->
-          <!-- // TODO: replace with real project data -->
-          <article class="card card--beta reveal reveal-delay-2">
-            <div class="card__thumbnail">
-              <!-- // replace with project screenshot -->
-              <div class="card__thumb-inner">
-                <span class="card__thumb-label">project screenshot</span>
-              </div>
-            </div>
+          <article class="card card--deepeye reveal reveal-delay-2" data-project="deepeye">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
             <div class="card__body">
-              <h3 class="card__title">Project Beta</h3>
-              <p class="card__desc">End-to-end product design for a B2B SaaS platform trusted by 200+ companies.</p>
+              <h3 class="card__title">Deepeye</h3>
+              <p class="card__desc">AI-gestützte Diagnose von Netzhauterkrankungen — von der Feldforschung bis zur Ausgründung.</p>
+              <div class="card__tags">
+                <span class="card__tag">UX Research</span>
+                <span class="card__tag">Medical AI</span>
+                <span class="card__tag">CI Design</span>
+                <span class="card__tag">Startup</span>
+              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </article>
+
+          <article class="card card--x4c reveal reveal-delay-3" data-project="x4c">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__body">
+              <h3 class="card__title">X-4C</h3>
+              <p class="card__desc">Ein Data-Drop-In-AI-Prediction-Tool — UI und UX ohne großes Briefing, nur eine Farbvorgabe.</p>
+              <div class="card__tags">
+                <span class="card__tag">UI Design</span>
+                <span class="card__tag">UX Design</span>
+                <span class="card__tag">AI</span>
+                <span class="card__tag">Data Viz</span>
+              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </article>
+
+          <article class="card card--vaps reveal reveal-delay-1" data-project="vaps">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__body">
+              <h3 class="card__title">VAPS BI Dashboard</h3>
+              <p class="card__desc">BI-Dashboard für den Volkswagen Audi Partner Service — Pilotprojekt mit Rollout-Potenzial.</p>
+              <div class="card__tags">
+                <span class="card__tag">Dashboard Design</span>
+                <span class="card__tag">B2B</span>
+                <span class="card__tag">Stakeholder Management</span>
+              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </article>
+
+          <article class="card card--route reveal reveal-delay-2" data-project="routenopt">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__body">
+              <h3 class="card__title">Westphalia Datalab Routenoptimierung</h3>
+              <p class="card__desc">AI-gestütztes Routenoptimierungstool für Medikamentenlogistik — von der Idee bis zur Übergabe.</p>
+              <div class="card__tags">
+                <span class="card__tag">UX Design</span>
+                <span class="card__tag">AI</span>
+                <span class="card__tag">Route Optimization</span>
+                <span class="card__tag">Healthcare</span>
+              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </article>
+
+          <article class="card card--jobspr reveal reveal-delay-3" data-project="jobspreader">
+            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__body">
+              <h3 class="card__title">Jobspreader</h3>
+              <p class="card__desc">Iterative Produktentwicklung, strategische Initiativen und Teamführung — laufendes Projekt.</p>
               <div class="card__tags">
                 <span class="card__tag">Product Design</span>
-                <span class="card__tag">B2B SaaS</span>
-                <span class="card__tag">Systems</span>
+                <span class="card__tag">Strategy</span>
+                <span class="card__tag">Team Lead</span>
+                <span class="card__tag">Ongoing</span>
               </div>
-              <button class="card__expand-btn" aria-expanded="false" aria-controls="detail-beta">
-                view case study
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-            <div class="card__detail" id="detail-beta">
-              <div class="card__detail-inner">
-                <div class="card__meta">
-                  <!-- // TODO: replace with actual role, timeline, tools -->
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Role</span>
-                    <span class="card__meta-value">Product Designer</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Timeline</span>
-                    <span class="card__meta-value">9 months</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Tools</span>
-                    <span class="card__meta-value">Figma, Notion, FullStory</span>
-                  </div>
-                </div>
-                <p class="card__section-title">the problem</p>
-                <!-- // TODO: replace with real problem statement -->
-                <p class="card__section-text">A growing B2B platform had accumulated six years of UX debt. Each new feature added friction. Onboarding churn was 40% in the first week.</p>
-                <p class="card__section-title">the approach</p>
-                <!-- // TODO: replace with real approach/key decisions -->
-                <p class="card__section-text">Ran a full audit: 200+ screens, 40 jobs-to-be-done, 8 critical flows. Rebuilt the information architecture from scratch. Designed a new onboarding arc that matched users' mental models rather than the product's internal logic.</p>
-                <p class="card__section-title">the outcome</p>
-                <!-- // TODO: replace with real outcome/metrics -->
-                <p class="card__section-text">First-week churn dropped to 18%. Power user activation (reaching 5+ sessions) up 61%. Sales team reported shorter demo cycles because the product "finally explained itself."</p>
-                <button class="card__close-btn">
-                  collapse
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M6 10V2M2 6l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ===== CARD 3: Project Gamma ===== -->
-          <!-- // TODO: replace with real project data -->
-          <article class="card card--gamma reveal reveal-delay-3">
-            <div class="card__thumbnail">
-              <!-- // replace with project screenshot -->
-              <div class="card__thumb-inner">
-                <span class="card__thumb-label">project screenshot</span>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Project Gamma</h3>
-              <p class="card__desc">Design system & component library — the invisible foundation for everything.</p>
-              <div class="card__tags">
-                <span class="card__tag">Design Systems</span>
-                <span class="card__tag">Tokens</span>
-                <span class="card__tag">Component Library</span>
-              </div>
-              <button class="card__expand-btn" aria-expanded="false" aria-controls="detail-gamma">
-                view case study
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M7 2v10M2 7l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-            <div class="card__detail" id="detail-gamma">
-              <div class="card__detail-inner">
-                <div class="card__meta">
-                  <!-- // TODO: replace with actual role, timeline, tools -->
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Role</span>
-                    <span class="card__meta-value">UX Lead / Design Systems</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Timeline</span>
-                    <span class="card__meta-value">12 months</span>
-                  </div>
-                  <div class="card__meta-item">
-                    <span class="card__meta-label">Tools</span>
-                    <span class="card__meta-value">Figma, Storybook, Tokens Studio</span>
-                  </div>
-                </div>
-                <p class="card__section-title">the problem</p>
-                <!-- // TODO: replace with real problem statement -->
-                <p class="card__section-text">Seven product teams. Seven inconsistent button styles. Engineers rebuilding the same modal from scratch every sprint. The product looked and felt different depending on which team had shipped the screen.</p>
-                <p class="card__section-title">the approach</p>
-                <!-- // TODO: replace with real approach/key decisions -->
-                <p class="card__section-text">Audited 900 components across 4 products. Defined a token system (120 semantic tokens) before touching a single component. Built in Figma with Storybook parity so design and code stayed in sync by default.</p>
-                <p class="card__section-title">the outcome</p>
-                <!-- // TODO: replace with real outcome/metrics -->
-                <p class="card__section-text">Shipped 140 production-ready components in 12 months. New feature design time down 55%. Cross-team consistency score (internal UX audit) up from 3.1 to 8.8 out of 10.</p>
-                <button class="card__close-btn">
-                  collapse
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M6 10V2M2 6l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
+              <span class="card__cta">view case study <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </article>
 
@@ -2144,6 +2158,26 @@
     </section>
 
   </main>
+
+  <!-- ===== PROJECT MODAL ===== -->
+  <div class="project-modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="project-modal__backdrop" id="modalBackdrop"></div>
+    <div class="project-modal__panel">
+      <button class="project-modal__close" id="modalClose" aria-label="Schließen">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="project-modal__screenshots" id="modalScreenshots"></div>
+      <div class="project-modal__content">
+        <div class="project-modal__tags" id="modalTags"></div>
+        <h2 class="project-modal__title" id="modalTitle"></h2>
+        <p class="project-modal__desc" id="modalDesc"></p>
+        <div class="project-modal__meta" id="modalMeta"></div>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
@@ -2480,33 +2514,165 @@
     });
 
     /* =====================================================
-       WORK CARDS — expand / collapse in-place
+       WORK CARDS — project modal
        ===================================================== */
 
-    document.querySelectorAll('.card').forEach(card => {
-      const expandBtn = card.querySelector('.card__expand-btn');
-      const closeBtn  = card.querySelector('.card__close-btn');
-      const detail    = card.querySelector('.card__detail');
-      if (!expandBtn || !detail) return;
+    const projectData = {
+      'sales-suite': {
+        title: 'Sales Suite: Company Screening',
+        desc: 'Das erste Feature einer modularen Sales Suite, die sechs einzeln buchbare Sales-Programme unter einem Dach vereint.',
+        tags: ['UX Research', 'Product Design', 'Figma'],
+        meta: [
+          { label: 'Rolle', value: 'UX Lead' },
+          { label: 'Unternehmen', value: 'Wollmilchsau' },
+          { label: 'Tools', value: 'Figma' },
+        ],
+        screenshots: 4,
+        sections: [
+          { heading: 'Das Problem', text: 'Innerhalb der Sales Suite — einer Suite, die 6 verschiedene Sales-Programme umfasst, die man einzeln buchen kann — sollte das erste Feature gebaut werden: das Company Screening.' },
+          { heading: 'Was ich gemacht habe', text: 'Gemeinsam mit meinem Product Owner habe ich aus einer reinen Idee heraus alle Features mit gängigen UX-Methoden erarbeitet: von der Discovery über Wireframing bis zum fertigen Figma-Design.' },
+          { heading: 'Das Ergebnis', text: 'Das finale Design ging direkt in die Entwicklung. Ein Feature, das nicht einfach nur gebaut wurde, sondern von Anfang an auf echte Nutzerbedürfnisse ausgerichtet war.' },
+        ],
+      },
+      'deepeye': {
+        title: 'Deepeye',
+        desc: 'Ein AI-gestütztes Diagnosetool für Augenärzte — entstanden aus echter Feldforschung, geendet als eigenständiges Unternehmen.',
+        tags: ['UX Research', 'Medical AI', 'CI Design', 'Startup'],
+        meta: [
+          { label: 'Rolle', value: 'UX Designer' },
+          { label: 'Unternehmen', value: 'Westphalia Datalab' },
+          { label: 'Tools', value: 'Figma' },
+        ],
+        screenshots: 5,
+        sections: [
+          { heading: 'Das Problem', text: 'Es sollte ein Tool entwickelt werden, das Augenärzten mithilfe von AI bei der Diagnose von Netzhauterkrankungen hilft — ein hochspezialisiertes Werkzeug für ein hochspezialisiertes Umfeld.' },
+          { heading: 'Was ich gemacht habe', text: 'In Zusammenarbeit mit dem Augenzentrum am St. Franziskus-Hospital in Münster durfte ich vor Ort die verwendeten Geräte ausprobieren und habe gemeinsam mit den Augenärzten die Anforderungen an das Programm ermittelt. Echte Nutzer, echte Workflows, echte Probleme.' },
+          { heading: 'Das Ergebnis', text: 'Mit den gesammelten Anforderungen habe ich die komplette CI und das Tool entwickelt. Das Projekt endete in einer Ausgründung und fungiert bis heute als eigenständiges Unternehmen.' },
+        ],
+      },
+      'x4c': {
+        title: 'X-4C',
+        desc: 'UI und UX für ein Daten-Drop-In-Prediction-Tool — mehrfach übern Haufen geworfen, aber das Design hielt.',
+        tags: ['UI Design', 'UX Design', 'AI', 'Data Visualization'],
+        meta: [
+          { label: 'Rolle', value: 'UX Designer' },
+          { label: 'Unternehmen', value: 'Westphalia Datalab' },
+          { label: 'Tools', value: 'Figma' },
+        ],
+        screenshots: 6,
+        sections: [
+          { heading: 'Das Problem', text: 'Die Aufgabe war es, ein Tool zu konzipieren, in das man beliebige Daten kippen kann und die dahinterliegende AI eine Vorhersage berechnet. Offen, flexibel, komplex.' },
+          { heading: 'Was ich gemacht habe', text: 'Ohne große Anforderungen, aber mit einer festgelegten Farbgebung habe ich UI und UX von Grund auf entworfen. Konzeption, Wireframing, Prototyping — alles aus einer Hand.' },
+          { heading: 'Das Ergebnis', text: 'Die Designs entstanden und waren solide — das Produkt selbst wurde allerdings mehrfach übern Haufen geworfen. Ein klassischer Fall: gutes Design, schwieriger Produktweg.' },
+        ],
+      },
+      'vaps': {
+        title: 'VAPS BI Dashboard',
+        desc: 'BI-Dashboard für den Volkswagen Audi Partner Service — Pilotprojekt mit echtem Rollout.',
+        tags: ['Dashboard Design', 'B2B', 'Stakeholder Management'],
+        meta: [
+          { label: 'Rolle', value: 'UX Designer' },
+          { label: 'Unternehmen', value: 'Westphalia Datalab' },
+          { label: 'Tools', value: 'Figma' },
+        ],
+        screenshots: 4,
+        sections: [
+          { heading: 'Das Problem', text: 'Für die VAPS (Volkswagen Audi Partner Service) sollte ein Dashboard als Testprodukt für einen Kreis entwickelt werden — mit dem Ziel, es bei Erfolg deutschlandweit zu vertreiben.' },
+          { heading: 'Was ich gemacht habe', text: 'In enger Zusammenarbeit mit dem Kunden und unter Vorgaben der bestehenden Tool-UI habe ich UX und UI konzipiert und die Ergebnisse in Stakeholder-Meetings präsentiert.' },
+          { heading: 'Das Ergebnis', text: 'Das Dashboard wurde im Pilotkreis ausgerollt und ging mit der hauseigenen IT der VAPS in die Entwicklung. Ein Produkt, das den Weg vom Konzept in die echte Infrastruktur gefunden hat.' },
+        ],
+      },
+      'routenopt': {
+        title: 'Routenoptimierung',
+        desc: 'Von der Idee bis zur Übergabe: ein AI-gestütztes Routenplanungstool für Medikamentenlogistik.',
+        tags: ['UX Design', 'AI', 'Route Optimization', 'Healthcare'],
+        meta: [
+          { label: 'Rolle', value: 'UX Designer' },
+          { label: 'Unternehmen', value: 'Westphalia Datalab' },
+          { label: 'Tools', value: 'Figma' },
+        ],
+        screenshots: 7,
+        sections: [
+          { heading: 'Das Problem', text: 'Für einen Verband in der Medikamentenlogistik sollte ein Routenoptimierungstool entwickelt werden — mit Anforderungen an Einsatzplanung und AI-gestützte Routenberechnung.' },
+          { heading: 'Was ich gemacht habe', text: 'In enger Zusammenarbeit mit dem Kunden habe ich das Tool von der Idee bis zur finalisierten UI und UX umgesetzt. Discovery, Konzept, Wireframes, finales Design — vollständig.' },
+          { heading: 'Das Ergebnis', text: 'Das Tool ist in die Entwicklung gegangen und wurde dem Kunden übergeben. Ein Projekt, das zeigt, dass gute UX auch in hochspezialisierten Domänen einen realen Unterschied macht.' },
+        ],
+      },
+      'jobspreader': {
+        title: 'Jobspreader',
+        desc: 'Laufendes Produkt. Iterative Weiterentwicklung, strategische Initiativen und Teamführung.',
+        tags: ['Product Design', 'Strategy', 'Team Lead', 'Ongoing'],
+        meta: [
+          { label: 'Rolle', value: 'UX Lead' },
+          { label: 'Unternehmen', value: 'Wollmilchsau' },
+          { label: 'Status', value: 'Laufend' },
+          { label: 'Tools', value: 'Figma, Notion' },
+        ],
+        screenshots: 4,
+        sections: [
+          { heading: 'Was ich mache', text: 'Ich entwickle Jobspreader iterativ weiter: Ideenfindung und Brainstorming neuer Features, Weiterentwicklung bestehender Features, Entwicklung neuer UI und UX, Verbesserung von Prozessen in der gesamten Produktentwicklung.' },
+          { heading: 'Teamführung', text: 'Ich manage das indische Entwicklerteam und stelle sicher, dass Design-Intentionen in der Implementierung ankommen. Kommunikation, Struktur, klare Specs.' },
+          { heading: 'Strategische Initiative: Simplify', text: 'Ich habe den Stein ins Rollen gebracht und die strategische Initiative "Simplify" ergriffen — ein Projekt, das das gesamte Tool simplifiziert hat und Einfluss auf die gesamte Firma hatte. Nicht nur UX. Die ganze Richtung.' },
+        ],
+      },
+    };
 
-      const expand = () => {
-        detail.classList.add('is-open');
-        expandBtn.classList.add('is-open');
-        expandBtn.setAttribute('aria-expanded', 'true');
-        setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-      };
-      const collapse = () => {
-        detail.classList.remove('is-open');
-        expandBtn.classList.remove('is-open');
-        expandBtn.setAttribute('aria-expanded', 'false');
-      };
+    const modal        = document.getElementById('projectModal');
+    const modalClose   = document.getElementById('modalClose');
+    const modalBackdrop = document.getElementById('modalBackdrop');
 
-      expandBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        detail.classList.contains('is-open') ? collapse() : expand();
-      });
-      closeBtn?.addEventListener('click', e => { e.stopPropagation(); collapse(); });
+    function openModal(projectId) {
+      const p = projectData[projectId];
+      if (!p) return;
+
+      // Screenshots
+      const shots = document.getElementById('modalScreenshots');
+      shots.innerHTML = Array.from({ length: p.screenshots }, (_, i) =>
+        `<div class="project-modal__screenshot"><span>screenshot ${i + 1}</span></div>`
+      ).join('');
+
+      // Tags
+      document.getElementById('modalTags').innerHTML = p.tags
+        .map(t => `<span class="card__tag">${t}</span>`).join('');
+
+      // Title + desc
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalDesc').textContent  = p.desc;
+
+      // Meta
+      document.getElementById('modalMeta').innerHTML = p.meta
+        .map(m => `<div class="project-modal__meta-item">
+          <span class="project-modal__meta-label">${m.label}</span>
+          <span class="project-modal__meta-value">${m.value}</span>
+        </div>`).join('');
+
+      // Sections
+      document.getElementById('modalBody').innerHTML = p.sections
+        .map(s => `<p class="project-modal__section-heading">${s.heading}</p>
+          <p class="project-modal__section-text">${s.text}</p>`).join('');
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.card[data-project]').forEach(card => {
+      card.addEventListener('click', () => openModal(card.dataset.project));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card.dataset.project); } });
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
     });
+
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
 
     /* =====================================================
        SMOOTH SCROLL — top clearance for fixed logo bar
