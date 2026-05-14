@@ -642,7 +642,19 @@
       height: 240px;
       position: relative;
       overflow: hidden;
-      /* // replace with project screenshot */
+    }
+
+    .card__thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card__thumbnail img {
+      transform: scale(1.04);
     }
 
     /* Individual card thumbnail colors */
@@ -1853,7 +1865,7 @@
         <div class="work__grid">
 
           <article class="card card--sales reveal reveal-delay-1" data-project="sales-suite">
-            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__thumbnail"><img src="images/projects/salessuite/salessuite_companyscreening01.png" alt="Sales Suite: Company Screening" loading="lazy" /></div>
             <div class="card__body">
               <h3 class="card__title">Sales Suite: Company Screening</h3>
               <p class="card__desc">Das erste Feature einer modularen Sales Suite — von der Idee bis zum fertigen Figma-Design.</p>
@@ -1867,7 +1879,7 @@
           </article>
 
           <article class="card card--deepeye reveal reveal-delay-2" data-project="deepeye">
-            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__thumbnail"><img src="images/projects/deepeye/deepeye01.png" alt="Deepeye" loading="lazy" /></div>
             <div class="card__body">
               <h3 class="card__title">Deepeye</h3>
               <p class="card__desc">AI-gestützte Diagnose von Netzhauterkrankungen — von der Feldforschung bis zur Ausgründung.</p>
@@ -1882,7 +1894,7 @@
           </article>
 
           <article class="card card--x4c reveal reveal-delay-3" data-project="x4c">
-            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__thumbnail"><img src="images/projects/x4C/x4c01.png" alt="X-4C" loading="lazy" /></div>
             <div class="card__body">
               <h3 class="card__title">X-4C</h3>
               <p class="card__desc">Ein Data-Drop-In-AI-Prediction-Tool — UI und UX ohne großes Briefing, nur eine Farbvorgabe.</p>
@@ -1897,7 +1909,7 @@
           </article>
 
           <article class="card card--vaps reveal reveal-delay-1" data-project="vaps">
-            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__thumbnail"><img src="images/projects/VAPS/VAPS01.png" alt="VAPS BI Dashboard" loading="lazy" /></div>
             <div class="card__body">
               <h3 class="card__title">VAPS BI Dashboard</h3>
               <p class="card__desc">BI-Dashboard für den Volkswagen Audi Partner Service — Pilotprojekt mit Rollout-Potenzial.</p>
@@ -1911,7 +1923,7 @@
           </article>
 
           <article class="card card--route reveal reveal-delay-2" data-project="routenopt">
-            <div class="card__thumbnail"><div class="card__thumb-inner"><span class="card__thumb-label">screenshots coming</span></div></div>
+            <div class="card__thumbnail"><img src="images/projects/routenoptimierung/routenoptimierung01.png" alt="Routenoptimierung" loading="lazy" /></div>
             <div class="card__body">
               <h3 class="card__title">Westphalia Datalab Routenoptimierung</h3>
               <p class="card__desc">AI-gestütztes Routenoptimierungstool für Medikamentenlogistik — von der Idee bis zur Übergabe.</p>
@@ -2527,7 +2539,12 @@
           { label: 'Unternehmen', value: 'Wollmilchsau' },
           { label: 'Tools', value: 'Figma' },
         ],
-        screenshots: 4,
+        images: [
+          'images/projects/salessuite/salessuite_companyscreening01.png',
+          'images/projects/salessuite/salessuite_companyscreening02.png',
+          'images/projects/salessuite/salessuite_companyscreening03.png',
+          'images/projects/salessuite/salessuite_companyscreening04.png',
+        ],
         sections: [
           { heading: 'Das Problem', text: 'Innerhalb der Sales Suite — einer Suite, die 6 verschiedene Sales-Programme umfasst, die man einzeln buchen kann — sollte das erste Feature gebaut werden: das Company Screening.' },
           { heading: 'Was ich gemacht habe', text: 'Gemeinsam mit meinem Product Owner habe ich aus einer reinen Idee heraus alle Features mit gängigen UX-Methoden erarbeitet: von der Discovery über Wireframing bis zum fertigen Figma-Design.' },
@@ -2543,7 +2560,12 @@
           { label: 'Unternehmen', value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        screenshots: 5,
+        images: [
+          'images/projects/deepeye/deepeye01.png',
+          'images/projects/deepeye/deepeye02.png',
+          'images/projects/deepeye/deepeye03.png',
+          'images/projects/deepeye/deepeye04.png',
+        ],
         sections: [
           { heading: 'Das Problem', text: 'Es sollte ein Tool entwickelt werden, das Augenärzten mithilfe von AI bei der Diagnose von Netzhauterkrankungen hilft — ein hochspezialisiertes Werkzeug für ein hochspezialisiertes Umfeld.' },
           { heading: 'Was ich gemacht habe', text: 'In Zusammenarbeit mit dem Augenzentrum am St. Franziskus-Hospital in Münster durfte ich vor Ort die verwendeten Geräte ausprobieren und habe gemeinsam mit den Augenärzten die Anforderungen an das Programm ermittelt. Echte Nutzer, echte Workflows, echte Probleme.' },
@@ -2559,7 +2581,14 @@
           { label: 'Unternehmen', value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        screenshots: 6,
+        images: [
+          'images/projects/x4C/x4c01.png',
+          'images/projects/x4C/x4c02.png',
+          'images/projects/x4C/x4c03.png',
+          'images/projects/x4C/x4c04.png',
+          'images/projects/x4C/x4c05.png',
+          'images/projects/x4C/x4c06.png',
+        ],
         sections: [
           { heading: 'Das Problem', text: 'Die Aufgabe war es, ein Tool zu konzipieren, in das man beliebige Daten kippen kann und die dahinterliegende AI eine Vorhersage berechnet. Offen, flexibel, komplex.' },
           { heading: 'Was ich gemacht habe', text: 'Ohne große Anforderungen, aber mit einer festgelegten Farbgebung habe ich UI und UX von Grund auf entworfen. Konzeption, Wireframing, Prototyping — alles aus einer Hand.' },
@@ -2575,7 +2604,12 @@
           { label: 'Unternehmen', value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        screenshots: 4,
+        images: [
+          'images/projects/VAPS/VAPS01.png',
+          'images/projects/VAPS/VAPS02.png',
+          'images/projects/VAPS/VAPS03.png',
+          'images/projects/VAPS/VAPS04.png',
+        ],
         sections: [
           { heading: 'Das Problem', text: 'Für die VAPS (Volkswagen Audi Partner Service) sollte ein Dashboard als Testprodukt für einen Kreis entwickelt werden — mit dem Ziel, es bei Erfolg deutschlandweit zu vertreiben.' },
           { heading: 'Was ich gemacht habe', text: 'In enger Zusammenarbeit mit dem Kunden und unter Vorgaben der bestehenden Tool-UI habe ich UX und UI konzipiert und die Ergebnisse in Stakeholder-Meetings präsentiert.' },
@@ -2591,7 +2625,15 @@
           { label: 'Unternehmen', value: 'Westphalia Datalab' },
           { label: 'Tools', value: 'Figma' },
         ],
-        screenshots: 7,
+        images: [
+          'images/projects/routenoptimierung/routenoptimierung01.png',
+          'images/projects/routenoptimierung/routenoptimierung02.png',
+          'images/projects/routenoptimierung/routenoptimierung03.png',
+          'images/projects/routenoptimierung/routenoptimierung04.png',
+          'images/projects/routenoptimierung/routenoptimierung05.png',
+          'images/projects/routenoptimierung/routenoptimierung06.png',
+          'images/projects/routenoptimierung/routenoptimierung07.png',
+        ],
         sections: [
           { heading: 'Das Problem', text: 'Für einen Verband in der Medikamentenlogistik sollte ein Routenoptimierungstool entwickelt werden — mit Anforderungen an Einsatzplanung und AI-gestützte Routenberechnung.' },
           { heading: 'Was ich gemacht habe', text: 'In enger Zusammenarbeit mit dem Kunden habe ich das Tool von der Idee bis zur finalisierten UI und UX umgesetzt. Discovery, Konzept, Wireframes, finales Design — vollständig.' },
@@ -2626,9 +2668,15 @@
 
       // Screenshots
       const shots = document.getElementById('modalScreenshots');
-      shots.innerHTML = Array.from({ length: p.screenshots }, (_, i) =>
-        `<div class="project-modal__screenshot"><span>screenshot ${i + 1}</span></div>`
-      ).join('');
+      if (p.images?.length) {
+        shots.innerHTML = p.images.map((src, i) =>
+          `<div class="project-modal__screenshot"><img src="${src}" alt="Screenshot ${i + 1}" loading="lazy" /></div>`
+        ).join('');
+      } else {
+        shots.innerHTML = Array.from({ length: p.screenshots || 4 }, (_, i) =>
+          `<div class="project-modal__screenshot"><span>screenshot ${i + 1}</span></div>`
+        ).join('');
+      }
 
       // Tags
       document.getElementById('modalTags').innerHTML = p.tags
